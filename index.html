@@ -162,6 +162,88 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/13/ImageClassificationByVGG/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Cache_4f3c05133e725b89..jpg">
+      <meta itemprop="name" content="PeterQwQ">
+      <meta itemprop="description" content="后知后觉又过了一个秋">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PeterQwQ">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/04/13/ImageClassificationByVGG/" class="post-title-link" itemprop="url">ImageClassificationByVGG</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-04-13 20:44:02 / 修改时间：21:00:48" itemprop="dateCreated datePublished" datetime="2023-04-13T20:44:02+08:00">2023-04-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pytorch/" itemprop="url" rel="index"><span itemprop="name">-Pytorch</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在一个只有300张的数据集，100张验证集的dataset上玩一玩（主要是熟悉一下代码，李沐的课程代码都在d2l中很少自己手写代码）</p>
+<p>本项目为二分类问题，为了分别ants和bees：</p>
+<h2 id="创建Dataset"><a href="#创建Dataset" class="headerlink" title="创建Dataset"></a>创建Dataset</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建输入图像预处理类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ImageTransform</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,resize,mean,std</span>):</span><br><span class="line">        self.data_transform=&#123;</span><br><span class="line">            <span class="string">&#x27;train&#x27;</span>:transforms.Compose(</span><br><span class="line">                [</span><br><span class="line">                    transforms.RandomResizedCrop(resize,scale=(<span class="number">0.5</span>,<span class="number">1.0</span>)),</span><br><span class="line">                    transforms.RandomHorizontalFlip(),</span><br><span class="line">                    transforms.ToTensor(),</span><br><span class="line">                    transforms.Normalize(mean,std)</span><br><span class="line">                ]</span><br><span class="line">            ),</span><br><span class="line">            <span class="string">&#x27;val&#x27;</span>:transforms.Compose(</span><br><span class="line">                [</span><br><span class="line">                    transforms.Resize(resize),</span><br><span class="line">                    transforms.CenterCrop(resize),</span><br><span class="line">                    transforms.ToTensor(),</span><br><span class="line">                    transforms.Normalize(mean,std)</span><br><span class="line">                ]</span><br><span class="line">            )</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self,img,phase=<span class="string">&#x27;train&#x27;</span></span>):</span><br><span class="line">        <span class="keyword">return</span> self.data_transform[phase](img)</span><br><span class="line">size=<span class="number">224</span></span><br><span class="line">mean=(<span class="number">0.485</span>,<span class="number">0.456</span>,<span class="number">0.406</span>)</span><br><span class="line">std=(<span class="number">0.229</span>,<span class="number">0.224</span>,<span class="number">0.225</span>)</span><br><span class="line"><span class="comment"># 创建保存蚂蚁和蜜蜂图片的文件路径列表变量</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">make_datapath_list</span>(<span class="params">phase=<span class="string">&#x27;train&#x27;</span></span>):</span><br><span class="line">    rootpath=<span class="string">&#x27;./pytorch_advanced-master/1_image_classification/data/hymenoptera_data/&#x27;</span></span><br><span class="line">    target_path=osp.join(rootpath+phase+<span class="string">&#x27;/**/*.jpg&#x27;</span>)</span><br><span class="line">    path_list=[]</span><br><span class="line">    <span class="keyword">for</span> path <span class="keyword">in</span> glob.glob(target_path):</span><br><span class="line">        path_list.append(path)</span><br><span class="line">    <span class="keyword">return</span> path_list</span><br><span class="line"></span><br><span class="line">train_list=make_datapath_list(phase=<span class="string">&#x27;train&#x27;</span>)</span><br><span class="line">val_list=make_datapath_list(phase=<span class="string">&#x27;val&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建蚂蚁和蜜蜂的dataset</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Hdataset</span>(data.Dataset):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,file_list,transform=<span class="literal">None</span>,phase=<span class="string">&#x27;train&#x27;</span></span>):</span><br><span class="line">        self.file_list=file_list</span><br><span class="line">        self.transform=transform</span><br><span class="line">        self.phase=phase</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self.file_list)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, index</span>):</span><br><span class="line">        <span class="comment"># 载入第index张图片</span></span><br><span class="line">        img_path=self.file_list[index]</span><br><span class="line">        img=Image.<span class="built_in">open</span>(img_path)</span><br><span class="line">        <span class="comment"># 预处理</span></span><br><span class="line">        img_transformed=self.transform(img,self.phase)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 从文件名抽取标签</span></span><br><span class="line">        <span class="keyword">if</span> self.phase==<span class="string">&#x27;train&#x27;</span>:</span><br><span class="line">            label=img_path[<span class="number">77</span>:<span class="number">81</span>]</span><br><span class="line">        <span class="keyword">elif</span> self.phase==<span class="string">&#x27;val&#x27;</span>:</span><br><span class="line">            label=img_path[<span class="number">75</span>:<span class="number">79</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 将标签转化为数字</span></span><br><span class="line">        <span class="keyword">if</span> label==<span class="string">&#x27;ants&#x27;</span>:</span><br><span class="line">            label=<span class="number">0</span></span><br><span class="line">        <span class="keyword">elif</span> label==<span class="string">&#x27;bees&#x27;</span>:</span><br><span class="line">            label=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> img_transformed,label</span><br><span class="line"></span><br><span class="line">train_dataset=Hdataset(file_list=train_list,transform=ImageTransform(size,mean,std),phase=<span class="string">&#x27;train&#x27;</span>)</span><br><span class="line">val_dataset=Hdataset(file_list=val_list,transform=ImageTransform(size,mean,std),phase=<span class="string">&#x27;val&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建DataLoader"><a href="#创建DataLoader" class="headerlink" title="创建DataLoader"></a>创建DataLoader</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建DataLoader</span></span><br><span class="line">batch_size=<span class="number">32</span></span><br><span class="line">train_dataloader=torch.utils.data.DataLoader(train_dataset,batch_size,<span class="literal">True</span>)</span><br><span class="line">val_dataloader=torch.utils.data.DataLoader(val_dataset,batch_size,<span class="literal">False</span>)</span><br><span class="line">dataloader_dict=&#123;<span class="string">&#x27;train&#x27;</span>:train_dataloader,<span class="string">&#x27;val&#x27;</span>:val_dataloader&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建网络架构，优化器，loss函数"><a href="#创建网络架构，优化器，loss函数" class="headerlink" title="创建网络架构，优化器，loss函数"></a>创建网络架构，优化器，loss函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建网络模型</span></span><br><span class="line">use_pretrained=<span class="literal">True</span></span><br><span class="line">net=models.vgg16(use_pretrained)</span><br><span class="line">net.classifier[<span class="number">6</span>]=nn.Linear(in_features=<span class="number">4096</span>,out_features=<span class="number">2</span>) <span class="comment"># 用一个全连接层替代原来的分类器</span></span><br><span class="line">net.train()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义损失函数</span></span><br><span class="line">loss=nn.CrossEntropyLoss()</span><br><span class="line"><span class="comment"># 设置优化器</span></span><br><span class="line"><span class="comment"># 由于我们使用的是训练好的VGG框架，因此只需要训练原先的classifier的参数即可</span></span><br><span class="line">params_to_update=[]</span><br><span class="line">update_param_names=[<span class="string">&#x27;classifier.6.weight&#x27;</span>,<span class="string">&#x27;classifier.6.bias&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> name, param <span class="keyword">in</span> net.named_parameters():</span><br><span class="line">    <span class="keyword">if</span> name <span class="keyword">in</span> update_param_names:</span><br><span class="line">        param.requires_grad=<span class="literal">True</span></span><br><span class="line">        params_to_update.append(param)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        param.requires_grad=<span class="literal">False</span></span><br><span class="line">optimizer=optim.SGD(params_to_update,lr=<span class="number">0.01</span>,momentum=<span class="number">0.9</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建训练函数"><a href="#创建训练函数" class="headerlink" title="创建训练函数"></a>创建训练函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train_model</span>(<span class="params">net,dataloader_dict,loss,optimizer,epochs</span>):</span><br><span class="line">    <span class="comment">#  判断是否使用GPU</span></span><br><span class="line">    device=torch.device(<span class="string">&#x27;cuda:0&#x27;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&#x27;cpu&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;使用GPU&#x27;</span>,device)</span><br><span class="line">    net.to(device)</span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Epoch &#123;&#125;/&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(epoch+<span class="number">1</span>,epochs))</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;------------&#x27;</span>)</span><br><span class="line">        <span class="keyword">for</span> phase <span class="keyword">in</span> [<span class="string">&#x27;train&#x27;</span>,<span class="string">&#x27;val&#x27;</span>]:</span><br><span class="line">            <span class="keyword">if</span> phase==<span class="string">&#x27;train&#x27;</span>:</span><br><span class="line">                net.train()</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                net.<span class="built_in">eval</span>()</span><br><span class="line">            epoch_loss=<span class="number">0.0</span></span><br><span class="line">            epoch_corrects=<span class="number">0</span></span><br><span class="line">            <span class="keyword">if</span> epoch==<span class="number">0</span> <span class="keyword">and</span> phase==<span class="string">&#x27;train&#x27;</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">for</span> inputs,labels <span class="keyword">in</span> tqdm(dataloader_dict[phase]):</span><br><span class="line">                inputs=inputs.to(device)</span><br><span class="line">                labels=labels.to(device)</span><br><span class="line">                <span class="comment"># 初始化optimizer</span></span><br><span class="line">                optimizer.zero_grad()</span><br><span class="line">                <span class="comment"># forward</span></span><br><span class="line">                <span class="keyword">with</span> torch.set_grad_enabled(phase==<span class="string">&#x27;train&#x27;</span>):</span><br><span class="line">                    outputs=net(inputs)</span><br><span class="line">                    lost=loss(outputs,labels)</span><br><span class="line">                    _,preds=torch.<span class="built_in">max</span>(outputs,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                    <span class="comment"># 训练时的反向传播</span></span><br><span class="line">                    <span class="keyword">if</span> phase==<span class="string">&#x27;train&#x27;</span>:</span><br><span class="line">                        lost.backward()</span><br><span class="line">                        optimizer.step()</span><br><span class="line"></span><br><span class="line">                    epoch_loss+=lost.item()*inputs.size(<span class="number">0</span>)</span><br><span class="line">                    epoch_corrects+=torch.<span class="built_in">sum</span>(preds==labels.data)</span><br><span class="line">                    epoch_loss=epoch_loss/<span class="built_in">len</span>(dataloader_dict[phase].dataset)</span><br><span class="line">                    epoch_acc=epoch_corrects.double()/<span class="built_in">len</span>(dataloader_dict[phase].dataset)</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">&#x27;&#123;&#125; Loss:&#123;:.4f&#125; Acc:&#123;:.4f&#125;&#x27;</span>.<span class="built_in">format</span>(phase,epoch_loss,epoch_acc))</span><br></pre></td></tr></table></figure>
+
+<h2 id="观察结果"><a href="#观察结果" class="headerlink" title="观察结果"></a>观察结果</h2><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train<span class="constructor">_model(<span class="params">net</span>,<span class="params">dataloader_dict</span>,<span class="params">loss</span>,<span class="params">optimizer</span>,5)</span></span><br></pre></td></tr></table></figure>
+
+<p>结果如下：</p>
+<p><img src="/../pic/antsandbees.png"></p>
+<p>本人略微调了一下书中原文给的<code>lr</code>，然后进行了5个<code>epoch</code>的训练，<code>Acc</code>还是较为高的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/10/Python-Learning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -644,20 +726,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
