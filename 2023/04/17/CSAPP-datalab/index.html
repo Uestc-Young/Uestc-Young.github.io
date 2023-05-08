@@ -28,9 +28,9 @@
 <meta property="og:description" content="Xor x\oplus y&#x3D;(\lnot x \land y) \lor (x \land  \lnot y)将上方式子同时取两次反可以得到：  x \oplus y&#x3D;\lnot (\lnot (\lnot x \land y  )\land \lnot(x \land \lnot y))故可以得到： 123int bitXor(int x, int y) &amp;#123;  return ~((~(">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-04-17T08:45:34.000Z">
-<meta property="article:modified_time" content="2023-04-22T12:54:52.993Z">
+<meta property="article:modified_time" content="2023-05-08T07:24:24.497Z">
 <meta property="article:author" content="PeterQwQ">
-<meta property="article:tag" content="-CSAPP">
+<meta property="article:tag" content="CSAPP">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://peterqwq.top/2023/04/17/CSAPP-datalab/">
@@ -196,7 +196,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-04-22 20:54:52" itemprop="dateModified" datetime="2023-04-22T20:54:52+08:00">2023-04-22</time>
+                <time title="修改时间：2023-05-08 15:24:24" itemprop="dateModified" datetime="2023-05-08T15:24:24+08:00">2023-05-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -204,7 +204,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">-C</span></a>
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C</span></a>
                 </span>
             </span>
 
@@ -224,6 +224,7 @@ x\oplus y=(\lnot x \land y) \lor (x \land  \lnot y)</script><p>将上方式子�
 <script type="math/tex; mode=display">
 x \oplus y=\lnot (\lnot (\lnot x \land y  )\land \lnot(x \land \lnot y))</script><p>故可以得到：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">bitXor</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> ~((~(~x&amp;y)&amp;~(x&amp;~y)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
 <h1 id="Tmin"><a href="#Tmin" class="headerlink" title="Tmin"></a>Tmin</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">tmin</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">  <span class="comment">//32 位</span></span><br><span class="line">  <span class="comment">// 0x80000000</span></span><br><span class="line">  <span class="comment">//0x8 1000</span></span><br><span class="line">  <span class="type">int</span> x=<span class="number">0x80</span>;</span><br><span class="line">  x&lt;&lt;=<span class="number">24</span>;</span><br><span class="line">  <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h1 id="Negate"><a href="#Negate" class="headerlink" title="Negate"></a>Negate</h1><p>求相反数（由补码求反码：按位取反加1）：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">negate</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> ~(x)+<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -259,7 +260,7 @@ x \oplus y=\lnot (\lnot (\lnot x \land y  )\land \lnot(x \land \lnot y))</script
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/CSAPP/" rel="tag"># -CSAPP</a>
+              <a href="/tags/CSAPP/" rel="tag"># CSAPP</a>
           </div>
 
         
@@ -271,7 +272,10 @@ x \oplus y=\lnot (\lnot (\lnot x \land y  )\land \lnot(x \land \lnot y))</script
     <a href="/2023/04/13/ImageClassificationByVGG/" rel="prev" title="ImageClassificationByVGG">
       <i class="fa fa-chevron-left"></i> ImageClassificationByVGG
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2023/05/08/Crypto-Pre/" rel="next" title="Crypto Pre">
+      Crypto Pre <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -346,20 +350,20 @@ x \oplus y=\lnot (\lnot (\lnot x \land y  )\land \lnot(x \land \lnot y))</script
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
