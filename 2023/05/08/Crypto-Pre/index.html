@@ -27,19 +27,19 @@
 <meta property="og:site_name" content="PeterQwQ">
 <meta property="og:description" content="AES算法的实现与应用算法背景1.发展过程高级加密标准（Advanced Encryption Standard，AES），又称Rijndael加密法，是目前应用最广泛的对称加密算法之一。AES算法背后的历史可以追溯到20世纪70年代，当时IBM和美国国家标准技术研究所（NIST）共同研究了一种名为Lucifer的加密算法。Lucifer是一种基于分组密码的加密算法，它的分组长度为64位，密钥长度">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://peterqwq.top/2023/05/08/Crypto-Pre/BLOG/source/_posts/CryptoPre/1280X1280.PNG">
-<meta property="og:image" content="http://peterqwq.top/2023/05/08/Crypto-Pre/BLOG/source/_posts/CryptoPre/1280X1280%20(1">
-<meta property="og:image" content="http://peterqwq.top/2023/05/08/Crypto-Pre/BLOG/source/_posts/CryptoPre/9dc4ec6a-5d92-4dc3-8700-f05349d6b5b8.png">
-<meta property="og:image" content="http://peterqwq.top/2023/05/08/Crypto-Pre/BLOG/source/_posts/CryptoPre/93d0ffa6-b857-489d-9461-b546e08db1fd.png">
-<meta property="og:image" content="http://peterqwq.top/2023/05/08/Crypto-Pre/BLOG/source/_posts/CryptoPre/c395d45b-2374-4856-96dc-b8b50b11f541.png">
-<meta property="og:image" content="http://peterqwq.top/2023/05/08/Crypto-Pre/BLOG/source/_posts/CryptoPre/8350f940-1a98-407a-a7e4-b46e483a4aa0.png">
-<meta property="og:image" content="http://peterqwq.top/2023/05/08/Crypto-Pre/BLOG/source/_posts/CryptoPre/267d9665-88e2-4e6a-bd21-2cf178b2e17a.png">
+<meta property="og:image" content="http://peterqwq.top/2023/05/08/Crypto-Pre/BLOG/source/pic/1280X1280.PNG">
+<meta property="og:image" content="http://peterqwq.top/2023/05/08/Crypto-Pre/BLOG/source/pic/1280X1280%20(1">
+<meta property="og:image" content="http://peterqwq.top/2023/05/08/Crypto-Pre/BLOG/source/pic/9dc4ec6a-5d92-4dc3-8700-f05349d6b5b8.png">
+<meta property="og:image" content="http://peterqwq.top/2023/05/08/Crypto-Pre/BLOG/source/pic/93d0ffa6-b857-489d-9461-b546e08db1fd.png">
+<meta property="og:image" content="http://peterqwq.top/2023/05/08/Crypto-Pre/BLOG/source/pic/c395d45b-2374-4856-96dc-b8b50b11f541.png">
+<meta property="og:image" content="http://peterqwq.top/2023/05/08/Crypto-Pre/BLOG/source/pic/8350f940-1a98-407a-a7e4-b46e483a4aa0.png">
+<meta property="og:image" content="http://peterqwq.top/2023/05/08/Crypto-Pre/BLOG/source/pic/267d9665-88e2-4e6a-bd21-2cf178b2e17a.png">
 <meta property="article:published_time" content="2023-05-08T07:04:12.000Z">
-<meta property="article:modified_time" content="2023-05-08T10:00:16.287Z">
+<meta property="article:modified_time" content="2023-05-08T10:10:32.251Z">
 <meta property="article:author" content="PeterQwQ">
 <meta property="article:tag" content="Crypto">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://peterqwq.top/2023/05/08/Crypto-Pre/BLOG/source/_posts/CryptoPre/1280X1280.PNG">
+<meta name="twitter:image" content="http://peterqwq.top/2023/05/08/Crypto-Pre/BLOG/source/pic/1280X1280.PNG">
 
 <link rel="canonical" href="http://peterqwq.top/2023/05/08/Crypto-Pre/">
 
@@ -198,7 +198,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2023-05-08 15:04:12 / 修改时间：18:00:16" itemprop="dateCreated datePublished" datetime="2023-05-08T15:04:12+08:00">2023-05-08</time>
+              <time title="创建时间：2023-05-08 15:04:12 / 修改时间：18:10:32" itemprop="dateCreated datePublished" datetime="2023-05-08T15:04:12+08:00">2023-05-08</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -241,7 +241,7 @@
 </ol>
 <h2 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h2><p>AES算法是一种高级加密标准算法，被广泛应用于网络通信、数据安全存储等领域。算法密钥长度可变，可分别为128位、192位和256位，数据长度位不一样，加密轮数也不一样，128位的是10轮，192位的是12轮，256位的是14轮。本文以128位密钥长度的AES算法为例进行讲解。算法流程如下：</p>
 <h4 id="1-加密流程"><a href="#1-加密流程" class="headerlink" title="1.加密流程"></a>1.加密流程</h4><p>流程如图</p>
-<p><img src="/2023/05/08/Crypto-Pre/BLOG\source\_posts\CryptoPre\1280X1280.PNG" alt="img"></p>
+<p><img src="/2023/05/08/Crypto-Pre/BLOG\source\pic\1280X1280.PNG" alt="img"></p>
 <h5 id="1-密钥扩展"><a href="#1-密钥扩展" class="headerlink" title="1.密钥扩展"></a>1.密钥扩展</h5><p>AES算法的密钥扩展是将初始密钥转化为更多的轮密钥，用于后续的运算。</p>
 <p>首先，需要将初始密钥分为16个字节，然后利用S-盒对每个字节进行替代，再进行行移位和列混合操作。之后，根据轮常量和轮密钥周期性地对每个字节进行异或运算，直至得到所需的轮密钥。</p>
 <p>扩展密钥是以4字节字为元素的一维阵列，表示为<script type="math/tex">W[Nb*  (Nr+1)]</script>，其中前Nk个字取为种子密钥，以后每个字按递归方式 定义。扩展算法根据Nk≤6和Nk&gt;6有所不同，其区别在于：当i-4为Nk的整数倍时，须先将前一个字 W[i-1]经过S盒 </p>
@@ -258,21 +258,21 @@
 <p>第1行向左移动1位，</p>
 <p>第三行向左移动2位，</p>
 <p>第四行向左移动3位。</p>
-<p><img src="/2023/05/08/Crypto-Pre/BLOG\source\_posts\CryptoPre\1280X1280 (1" alt="img">.PNG)</p>
+<p><img src="/2023/05/08/Crypto-Pre/BLOG\source\pic\1280X1280 (1" alt="img">.PNG)</p>
 <h5 id="4-列混淆"><a href="#4-列混淆" class="headerlink" title="4.列混淆"></a>4.列混淆</h5><ul>
 <li>列混合操作是将矩阵的每一列进行混合操作，混合操作通常使用特定的固定矩阵进行计算。</li>
 <li>将每列视为GF（<script type="math/tex">2^8</script>）上的多项式，与固定的多项式<script type="math/tex">c(x)</script>进行模<script type="math/tex">x^4+1</script>的乘法，<script type="math/tex">c(x)</script>模<script type="math/tex">x^4+1</script>可逆。</li>
 <li>写为矩阵乘法为:<script type="math/tex">b(x)=c(x)⊗a(x)</script></li>
-<li><img src="/2023/05/08/Crypto-Pre/BLOG\source\_posts\CryptoPre\9dc4ec6a-5d92-4dc3-8700-f05349d6b5b8.png" alt="img"></li>
+<li><img src="/2023/05/08/Crypto-Pre/BLOG\source\pic\9dc4ec6a-5d92-4dc3-8700-f05349d6b5b8.png" alt="img"></li>
 <li>矩阵形式</li>
-<li><img src="/2023/05/08/Crypto-Pre/BLOG\source\_posts\CryptoPre\93d0ffa6-b857-489d-9461-b546e08db1fd.png" alt="img"></li>
+<li><img src="/2023/05/08/Crypto-Pre/BLOG\source\pic\93d0ffa6-b857-489d-9461-b546e08db1fd.png" alt="img"></li>
 </ul>
 <h5 id="5-轮密钥加"><a href="#5-轮密钥加" class="headerlink" title="5.轮密钥加"></a>5.轮密钥加</h5><p>轮密钥加操作是将每个字节与轮密钥进行逐比特异或运算</p>
 <p>轮密钥长度与分组长度相同</p>
 <p>经过九轮字节替换、行移位、列混淆、轮密钥加运算后，</p>
 <p>第十轮进行字节替换、行移位、轮密钥加，最终得到密文</p>
 <h4 id="2-解密过程"><a href="#2-解密过程" class="headerlink" title="2.解密过程"></a>2.解密过程</h4><p>解密过程与加密过程顺序相反，流程如下</p>
-<p><img src="/2023/05/08/Crypto-Pre/BLOG\source\_posts\CryptoPre\c395d45b-2374-4856-96dc-b8b50b11f541.png" alt="img"></p>
+<p><img src="/2023/05/08/Crypto-Pre/BLOG\source\pic\c395d45b-2374-4856-96dc-b8b50b11f541.png" alt="img"></p>
 <h5 id="1-逆行移位"><a href="#1-逆行移位" class="headerlink" title="1.逆行移位"></a>1.逆行移位</h5><p>逆行移位操作是将矩阵的每行字节进行循环右移操作。</p>
 <p>第0行不变，</p>
 <p>第1行向右移动1位，</p>
@@ -283,9 +283,9 @@
 <script type="math/tex; mode=display">y=(A^{-1}(x-B))^{-1}</script><h5 id="3-轮密钥加"><a href="#3-轮密钥加" class="headerlink" title="3.轮密钥加"></a>3.轮密钥加</h5><p>与加密过程的流程相同，轮密钥加操作是将每个字节与轮密钥进行逐比特异或运算</p>
 <p>轮密钥长度与分组长度相同</p>
 <h5 id="4-逆列混淆"><a href="#4-逆列混淆" class="headerlink" title="4.逆列混淆"></a>4.逆列混淆</h5><p>逆列混淆变换是列混淆变换的逆，将状态矩阵中的每一列视为系数在 上的次数小于4的 多项式与同一个固定的多项式<script type="math/tex">d(x)</script>相乘</p>
-<p><img src="/2023/05/08/Crypto-Pre/BLOG\source\_posts\CryptoPre\8350f940-1a98-407a-a7e4-b46e483a4aa0.png" alt="img"></p>
+<p><img src="/2023/05/08/Crypto-Pre/BLOG\source\pic\8350f940-1a98-407a-a7e4-b46e483a4aa0.png" alt="img"></p>
 <script type="math/tex; mode=display">b(x)=d(x)⊗a(x)</script><p>矩阵形式</p>
-<p><img src="/2023/05/08/Crypto-Pre/BLOG\source\_posts\CryptoPre\267d9665-88e2-4e6a-bd21-2cf178b2e17a.png" alt="img"></p>
+<p><img src="/2023/05/08/Crypto-Pre/BLOG\source\pic\267d9665-88e2-4e6a-bd21-2cf178b2e17a.png" alt="img"></p>
 <p>密文也需要先进行九轮逆行移位、逆字节替换、轮密钥加、逆列混淆操作，</p>
 <p>第十轮进行逆行移位、逆字节替换、轮密钥加操作，以此得到明文。</p>
 <h2 id="安全分析"><a href="#安全分析" class="headerlink" title="安全分析"></a>安全分析</h2><p>AES作为对称加密算法，其算法设计采用了高度复杂的数学运算和结构，如有限域、置换、代换等，使得算法在加密过程中具有高度的混淆性和扩散性，从而增加了攻击者破解密文的难度。本文将从AES算法的安全性、攻击方式、防护措施等方面进行详细的分析。</p>
