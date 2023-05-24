@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peterqwq.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Python装饰器用过吗，是什么？是的，我熟悉Python装饰器。在Python中，装饰器是一种特殊的函数，用于修改其他函数的行为。装饰器函数接受一个函数作为输入，并返回一个新的函数或修改输入函数的函数。 装饰器的语法使用@符号将其应用于函数，放置在被装饰的函数的定义之前。当你调用被装饰的函数时，实际上执行的是装饰器函数返回的新函数或修改后的函数。 下面是一个简单的装饰器示例，展示了如何在函数调用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="南京大学面试">
+<meta property="og:url" content="http://peterqwq.top/2023/05/22/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6%E9%9D%A2%E8%AF%95/index.html">
+<meta property="og:site_name" content="PeterQwQ">
+<meta property="og:description" content="Python装饰器用过吗，是什么？是的，我熟悉Python装饰器。在Python中，装饰器是一种特殊的函数，用于修改其他函数的行为。装饰器函数接受一个函数作为输入，并返回一个新的函数或修改输入函数的函数。 装饰器的语法使用@符号将其应用于函数，放置在被装饰的函数的定义之前。当你调用被装饰的函数时，实际上执行的是装饰器函数返回的新函数或修改后的函数。 下面是一个简单的装饰器示例，展示了如何在函数调用">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-05-22T13:28:48.000Z">
+<meta property="article:modified_time" content="2023-05-24T13:55:34.859Z">
+<meta property="article:author" content="PeterQwQ">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://peterqwq.top/2023/05/22/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6%E9%9D%A2%E8%AF%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>南京大学面试 | PeterQwQ</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">PeterQwQ</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-link">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://peterqwq.top/2023/05/22/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6%E9%9D%A2%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Cache_4f3c05133e725b89..jpg">
+      <meta itemprop="name" content="PeterQwQ">
+      <meta itemprop="description" content="后知后觉又过了一个秋">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PeterQwQ">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          南京大学面试
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-05-22 21:28:48" itemprop="dateCreated datePublished" datetime="2023-05-22T21:28:48+08:00">2023-05-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-05-24 21:55:34" itemprop="dateModified" datetime="2023-05-24T21:55:34+08:00">2023-05-24</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Python装饰器用过吗，是什么？"><a href="#Python装饰器用过吗，是什么？" class="headerlink" title="Python装饰器用过吗，是什么？"></a>Python装饰器用过吗，是什么？</h1><p>是的，我熟悉Python装饰器。在Python中，装饰器是一种特殊的函数，用于修改其他函数的行为。装饰器函数接受一个函数作为输入，并返回一个新的函数或修改输入函数的函数。</p>
+<p>装饰器的语法使用<code>@</code>符号将其应用于函数，放置在被装饰的函数的定义之前。当你调用被装饰的函数时，实际上执行的是装饰器函数返回的新函数或修改后的函数。</p>
+<p>下面是一个简单的装饰器示例，展示了如何在函数调用前后打印日志信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">log_decorator</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Calling function: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(func.__name__))</span><br><span class="line">        result = func(*args, **kwargs)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Function &#123;&#125; executed.&quot;</span>.<span class="built_in">format</span>(func.__name__))</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@log_decorator</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">a, b</span>):</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line"></span><br><span class="line">result = add(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure>
+<p>在这个例子中，<code>log_decorator</code>是一个装饰器函数。通过使用<code>@log_decorator</code>将其应用于<code>add</code>函数，<code>add</code>函数的行为被修改了。当我们调用<code>add</code>函数时，装饰器会在函数调用前后打印日志信息。</p>
+<h1 id="C-如何debug？"><a href="#C-如何debug？" class="headerlink" title="C++如何debug？"></a>C++如何debug？</h1><p>在C++中，有多种方法可以进行调试。下面我会介绍一些常用的调试技术和工具。</p>
+<ol>
+<li>使用调试器：调试器是一个强大的工具，用于逐行执行代码并观察程序状态。常见的C++调试器包括GDB（GNU调试器）和LLDB（LLVM调试器）。通过在编译时添加调试标志（如<code>-g</code>），可以生成带有调试信息的可执行文件。然后，你可以在调试器中设置断点、单步执行、观察变量的值等。</li>
+<li>打印调试信息：在关键位置插入打印语句，输出变量的值或某些特定的标识信息。你可以使用<code>std::cout</code>语句在控制台输出调试信息。但请记住，在调试完成后，要记得删除或注释掉这些打印语句，以免影响性能。</li>
+<li>使用断言（assertions）：断言是一种用于验证程序假设的工具。你可以使用<code>assert</code>宏来检查某个条件是否为真，如果条件为假，则会触发断言错误并中断程序执行。这在发现程序中的逻辑错误时很有帮助。</li>
+<li>日志记录：通过添加日志语句来记录程序的执行过程和状态。你可以使用第三方日志库，如Boost.Log、spdlog、log4cpp等，也可以自己实现一个简单的日志记录功能。日志可以在程序运行时提供有关代码流程和数据的详细信息。</li>
+<li>使用内存调试工具：内存调试工具可帮助检测和解决内存相关问题，如内存泄漏、访问越界等。例如，Valgrind是一个流行的开源内存调试工具，可以检测到许多内存错误。</li>
+<li>使用集成开发环境（IDE）：大多数流行的C++集成开发环境都提供了调试功能，如Visual Studio、CLion、Eclipse等。这些IDE通常具有图形化的调试界面，使得调试过程更加直观和方便。</li>
+</ol>
+<h1 id="Linux命令行如何获取本地目录所有C文件的行数？"><a href="#Linux命令行如何获取本地目录所有C文件的行数？" class="headerlink" title="Linux命令行如何获取本地目录所有C文件的行数？"></a>Linux命令行如何获取本地目录所有C文件的行数？</h1><p>在Linux命令行中，你可以使用<code>find</code>和<code>wc</code>命令的组合来获取本地目录中所有C文件的行数。</p>
+<p>下面是一个示例命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find /path/to/directory -name &quot;*.c&quot; -exec wc -l &#123;&#125; +</span><br></pre></td></tr></table></figure>
+<p>请将<code>/path/to/directory</code>替换为你要搜索的目录的实际路径。这个命令会递归地搜索指定目录下的所有以<code>.c</code>为扩展名的文件，并对每个文件使用<code>wc -l</code>命令统计行数。</p>
+<p>执行命令后，会输出每个C文件的行数总和以及文件路径。</p>
+<h1 id="grep用过吗，什么作用？"><a href="#grep用过吗，什么作用？" class="headerlink" title="grep用过吗，什么作用？"></a>grep用过吗，什么作用？</h1><p><code>grep</code>命令的一般语法如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep [options] pattern [file...]</span><br></pre></td></tr></table></figure>
+<p>其中，<code>pattern</code>是你要搜索的字符串或正则表达式模式，<code>file</code>是要搜索的文件名（可以指定多个文件）。</p>
+<p><code>grep</code>命令的主要作用如下：</p>
+<ol>
+<li>搜索匹配的行：<code>grep</code>会逐行扫描文件，并返回包含匹配模式的行。</li>
+<li>支持正则表达式：<code>grep</code>可以使用正则表达式来描述更复杂的模式匹配，如通配符、字符类、重复次数等。</li>
+<li>多文件搜索：你可以同时搜索多个文件，<code>grep</code>会将匹配的行输出到标准输出。</li>
+<li>递归搜索：使用<code>-r</code>或<code>-R</code>选项，<code>grep</code>可以递归地搜索指定目录及其子目录下的文件。</li>
+<li>排除文件：使用<code>--exclude</code>或<code>--exclude-dir</code>选项，你可以排除某些文件或目录不被搜索。</li>
+<li>统计匹配数：使用<code>-c</code>选项，<code>grep</code>可以仅返回匹配到的行数，而不显示具体的匹配内容。</li>
+<li>忽略大小写：使用<code>-i</code>选项，<code>grep</code>可以忽略模式匹配时的大小写区别。</li>
+</ol>
+<h1 id="gdb如何attach到已经运行的进程上？"><a href="#gdb如何attach到已经运行的进程上？" class="headerlink" title="gdb如何attach到已经运行的进程上？"></a>gdb如何attach到已经运行的进程上？</h1><p>要使用GDB将其附加到已经运行的进程上，可以按照以下步骤操作：</p>
+<p>确保你已经安装了GDB。如果没有，请在Linux上使用适当的包管理器（如apt、yum或dnf）进行安装。例如，对于Ubuntu，可以使用以下命令安装GDB：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gdb</span><br></pre></td></tr></table></figure>
+<p>找到你要附加的目标进程的进程ID（PID）。你可以使用<code>ps</code>命令或其他进程监视工具来获取进程ID。例如，假设你要附加到进程名为”myapp”的进程，你可以运行以下命令来获取其进程ID：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep myapp</span><br></pre></td></tr></table></figure>
+<p>使用GDB的<code>attach</code>命令将其附加到目标进程。运行以下命令，将<code>&lt;PID&gt;</code>替换为目标进程的实际进程ID：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb -p &lt;PID&gt;</span><br></pre></td></tr></table></figure>
+<p>GDB将附加到目标进程，并显示GDB提示符，你可以在其中执行调试命令。</p>
+<p>一旦GDB附加到目标进程，你可以设置断点、单步执行、观察变量的值等等。你可以使用GDB的各种命令来调试正在运行的进程，以帮助你分析和解决问题。</p>
+<h1 id="解释一下transformer注意力机制"><a href="#解释一下transformer注意力机制" class="headerlink" title="解释一下transformer注意力机制"></a>解释一下transformer注意力机制</h1><p>在Transformer中，注意力机制主要由自注意力（Self-Attention）机制构成，它允许模型在输入序列中的不同位置之间建立关联。自注意力机制能够计算输入序列中每个位置与其他位置之间的相关性权重，从而为每个位置分配一个与其他位置的重要性相关的分数。</p>
+<p>自注意力机制的计算过程可以分为以下几个步骤：</p>
+<ol>
+<li>输入表示：将输入序列中的每个元素通过线性变换映射为三个表示：查询（Query）、键（Key）和值（Value）。这些表示将用于计算注意力权重。</li>
+<li>相似性评分：通过计算查询和键之间的相似性评分，衡量查询与键的关联程度。常用的计算方法是使用点积或其他变换（如缩放点积）来计算查询和键之间的内积。</li>
+<li>注意力权重计算：将相似性评分进行归一化，以得到注意力权重。一种常见的归一化方法是使用Softmax函数，将相似性评分转化为概率分布。</li>
+<li>加权求和：使用注意力权重对值进行加权求和，得到每个位置的上下文表示。这个步骤将根据每个位置的注意力权重为不同位置提供不同的关注程度。</li>
+<li>输出表示：对加权求和的结果进行线性变换，得到最终的自注意力输出表示。</li>
+</ol>
+<p>Transformer模型中的自注意力机制通过对输入序列中的元素之间的相互关系进行建模，能够捕捉到全局上下文信息，避免了传统循环神经网络中的顺序处理，并且能够处理长序列输入。这使得Transformer在自然语言处理等任务中取得了显著的成功。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/05/08/Crypto-Pre/" rel="prev" title="Crypto Pre">
+      <i class="fa fa-chevron-left"></i> Crypto Pre
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python%E8%A3%85%E9%A5%B0%E5%99%A8%E7%94%A8%E8%BF%87%E5%90%97%EF%BC%8C%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">Python装饰器用过吗，是什么？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E5%A6%82%E4%BD%95debug%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">C++如何debug？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96%E6%9C%AC%E5%9C%B0%E7%9B%AE%E5%BD%95%E6%89%80%E6%9C%89C%E6%96%87%E4%BB%B6%E7%9A%84%E8%A1%8C%E6%95%B0%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">Linux命令行如何获取本地目录所有C文件的行数？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#grep%E7%94%A8%E8%BF%87%E5%90%97%EF%BC%8C%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">grep用过吗，什么作用？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gdb%E5%A6%82%E4%BD%95attach%E5%88%B0%E5%B7%B2%E7%BB%8F%E8%BF%90%E8%A1%8C%E7%9A%84%E8%BF%9B%E7%A8%8B%E4%B8%8A%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">gdb如何attach到已经运行的进程上？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E9%87%8A%E4%B8%80%E4%B8%8Btransformer%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6"><span class="nav-number">6.</span> <span class="nav-text">解释一下transformer注意力机制</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="PeterQwQ"
+      src="/images/Cache_4f3c05133e725b89..jpg">
+  <p class="site-author-name" itemprop="name">PeterQwQ</p>
+  <div class="site-description" itemprop="description">后知后觉又过了一个秋</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Uestc-Young" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Uestc-Young" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2126015288@qq.com" title="E-Mail → mailto:2126015288@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">PeterQwQ</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
