@@ -28,8 +28,9 @@
 <meta property="og:description" content="Python装饰器用过吗，是什么？是的，我熟悉Python装饰器。在Python中，装饰器是一种特殊的函数，用于修改其他函数的行为。装饰器函数接受一个函数作为输入，并返回一个新的函数或修改输入函数的函数。 装饰器的语法使用@符号将其应用于函数，放置在被装饰的函数的定义之前。当你调用被装饰的函数时，实际上执行的是装饰器函数返回的新函数或修改后的函数。 下面是一个简单的装饰器示例，展示了如何在函数调用">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-05-22T13:28:48.000Z">
-<meta property="article:modified_time" content="2023-05-24T13:55:34.859Z">
+<meta property="article:modified_time" content="2023-05-25T09:57:38.553Z">
 <meta property="article:author" content="PeterQwQ">
+<meta property="article:tag" content="面试">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://peterqwq.top/2023/05/22/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6%E9%9D%A2%E8%AF%95/">
@@ -200,7 +201,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-05-24 21:55:34" itemprop="dateModified" datetime="2023-05-24T21:55:34+08:00">2023-05-24</time>
+                <time title="修改时间：2023-05-25 17:57:38" itemprop="dateModified" datetime="2023-05-25T17:57:38+08:00">2023-05-25</time>
               </span>
 
           
@@ -217,6 +218,7 @@
         <h1 id="Python装饰器用过吗，是什么？"><a href="#Python装饰器用过吗，是什么？" class="headerlink" title="Python装饰器用过吗，是什么？"></a>Python装饰器用过吗，是什么？</h1><p>是的，我熟悉Python装饰器。在Python中，装饰器是一种特殊的函数，用于修改其他函数的行为。装饰器函数接受一个函数作为输入，并返回一个新的函数或修改输入函数的函数。</p>
 <p>装饰器的语法使用<code>@</code>符号将其应用于函数，放置在被装饰的函数的定义之前。当你调用被装饰的函数时，实际上执行的是装饰器函数返回的新函数或修改后的函数。</p>
 <p>下面是一个简单的装饰器示例，展示了如何在函数调用前后打印日志信息：</p>
+<span id="more"></span>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">log_decorator</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Calling function: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(func.__name__))</span><br><span class="line">        result = func(*args, **kwargs)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Function &#123;&#125; executed.&quot;</span>.<span class="built_in">format</span>(func.__name__))</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@log_decorator</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">a, b</span>):</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line"></span><br><span class="line">result = add(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure>
 <p>在这个例子中，<code>log_decorator</code>是一个装饰器函数。通过使用<code>@log_decorator</code>将其应用于<code>add</code>函数，<code>add</code>函数的行为被修改了。当我们调用<code>add</code>函数时，装饰器会在函数调用前后打印日志信息。</p>
 <h1 id="C-如何debug？"><a href="#C-如何debug？" class="headerlink" title="C++如何debug？"></a>C++如何debug？</h1><p>在C++中，有多种方法可以进行调试。下面我会介绍一些常用的调试技术和工具。</p>
@@ -273,6 +275,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"># 面试</a>
+          </div>
 
         
 
@@ -371,7 +376,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
