@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peterqwq.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="为什么需要图神经网络对于一个图而言，我们通常注意于三种特征：  整个图的特征，例如图中有多少个节点，多少条边。 图中节点的意义，例如对于一个图片的图表示，可能一个节点就表示了一幅图片的一个像素点。 图中边的意义，例如对于社交网络而言，两个节点之间有边就表示两个人是有联系的，反之则没有联系。  因此，图神经网络的任务也通常集中于这三种，我们可以分为Graph-level,Node-level以及Ed">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图神经网络入门">
+<meta property="og:url" content="http://peterqwq.top/2023/10/21/GNN%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="PeterQwQ">
+<meta property="og:description" content="为什么需要图神经网络对于一个图而言，我们通常注意于三种特征：  整个图的特征，例如图中有多少个节点，多少条边。 图中节点的意义，例如对于一个图片的图表示，可能一个节点就表示了一幅图片的一个像素点。 图中边的意义，例如对于社交网络而言，两个节点之间有边就表示两个人是有联系的，反之则没有联系。  因此，图神经网络的任务也通常集中于这三种，我们可以分为Graph-level,Node-level以及Ed">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://peterqwq.top/pic/GNN/1.png">
+<meta property="og:image" content="http://peterqwq.top/pic/GNN/2.png">
+<meta property="og:image" content="http://peterqwq.top/pic/GNN/3.png">
+<meta property="og:image" content="http://peterqwq.top/pic/GNN/4.PNG">
+<meta property="og:image" content="http://peterqwq.top/pic/GNN/5.png">
+<meta property="og:image" content="http://peterqwq.top/pic/GNN/6.png">
+<meta property="og:image" content="http://peterqwq.top/pic/GNN/7.png">
+<meta property="og:image" content="http://peterqwq.top/pic/GNN/8.png">
+<meta property="og:image" content="http://peterqwq.top/pic/GNN/9.png">
+<meta property="article:published_time" content="2023-10-21T09:51:55.000Z">
+<meta property="article:modified_time" content="2023-10-21T10:58:39.933Z">
+<meta property="article:author" content="PeterQwQ">
+<meta property="article:tag" content="Machine Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://peterqwq.top/pic/GNN/1.png">
+
+<link rel="canonical" href="http://peterqwq.top/2023/10/21/GNN%E5%AD%A6%E4%B9%A0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>图神经网络入门 | PeterQwQ</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">PeterQwQ</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-link">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://peterqwq.top/2023/10/21/GNN%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Cache_4f3c05133e725b89..jpg">
+      <meta itemprop="name" content="PeterQwQ">
+      <meta itemprop="description" content="后知后觉又过了一个秋">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PeterQwQ">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          图神经网络入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-10-21 17:51:55 / 修改时间：18:58:39" itemprop="dateCreated datePublished" datetime="2023-10-21T17:51:55+08:00">2023-10-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pytorch/" itemprop="url" rel="index"><span itemprop="name">Pytorch</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="为什么需要图神经网络"><a href="#为什么需要图神经网络" class="headerlink" title="为什么需要图神经网络"></a>为什么需要图神经网络</h3><p>对于一个图而言，我们通常注意于三种特征：</p>
+<ol>
+<li>整个图的特征，例如图中有多少个节点，多少条边。</li>
+<li>图中节点的意义，例如对于一个图片的图表示，可能一个节点就表示了一幅图片的一个像素点。</li>
+<li>图中边的意义，例如对于社交网络而言，两个节点之间有边就表示两个人是有联系的，反之则没有联系。</li>
+</ol>
+<p>因此，图神经网络的任务也通常集中于这三种，我们可以分为<code>Graph-level</code>,<code>Node-level</code>以及<code>Edge-level</code>的任务。</p>
+<h3 id="如何表示一个图"><a href="#如何表示一个图" class="headerlink" title="如何表示一个图"></a>如何表示一个图</h3><p>无论要解决什么样的任务，首要任务肯定是要先表示出来一个图，比较容易想到的解决方案就是构造<code>邻接矩阵</code>。但是邻接矩阵有它的缺点，就是太过于稀疏了，我们在学Linear Algebra的时候都知道，稀疏矩阵其实是一个不好的东西，同时对于我们计算机而言，稀疏矩阵同时占用了大量没用的内存，这对于我们以后的计算肯定是会降低性能的，所以我们这里可以采用构建<code>邻接表</code>的形式来表示一个图。</p>
+<span id="more"></span>
+<p><img src="/pic/GNN/1.png" alt=""></p>
+<p>如下图所示，这样我们就可以很优雅的表示一个图了。</p>
+<h3 id="图神经网络结构"><a href="#图神经网络结构" class="headerlink" title="图神经网络结构"></a>图神经网络结构</h3><p>解决了图的表示的问题之后，我们就要开始着手设计搭建图神经网络了。首先我们考虑最简单的情况，不考虑节点之间的联系，一种最简单的方法就是，对每一个节点，我们都放到网络里面遍历一遍进行运算得到输出。同理，也可以这样对待每一条边，以及整体图形的属性都可以进行一个遍历得到结果。</p>
+<p><img src="/pic/GNN/2.png" alt=""></p>
+<p>同时，由于如果我们只是单纯的使用节点或单纯使用边的信息的话，效果显然不会很好。我们可以采取<code>pooling</code>技术。就是将边的信息映射到点上，反之亦然。见下图：</p>
+<p><img src="/pic/GNN/3.png" alt=""></p>
+<p>其实挺好理解的，就是把信息给融合在了一起。一般而言，我们会在上面的一层层图神经网络之后采用这样的<code>final layer</code>来进行分类或者回归任务。</p>
+<p><img src="/pic/GNN/4.PNG" alt=""></p>
+<p>但是我们也知道这种情况肯定效果不太好，因为我们提出图神经网络的一个重要原因就是我们要研究图中每一块每一块之间的关系，因此，一种叫做<code>message passing</code>的方法被提出，工作原理和上面的<code>pooling</code>其实差不多，只是它是在网络之间综合了邻居的所有信息，然后把它们concat起来，最后放到一个神经网络里面来进行更新。</p>
+<p>这种方法其实有点像传统cv里面卷积的概念，例如我们对于一个像素点而言，卷积就是让它来感知它附近像素点的内容，从而达到一个特征提取的效果。在这里，同样的，对于每一个节点而言，我们能够通过多层的网络，使得一个节点能够了解到不仅仅是自己邻居节点的内容，所以这种网络结构叫做<code>Graph Convolution Network(GCN)</code>。</p>
+<p><img src="/pic/GNN/5.png" alt=""></p>
+<p>同样的，对于边而言，我们也可以用上面的<code>message passing</code>的方法进行信息的融合，但是可以更加的多变，如下：</p>
+<p><img src="/pic/GNN/6.png" alt=""></p>
+<p>如果图过于庞大，则对于两个距离较远的节点，可能要经过很多层才能了解到对方的信息，这样信息可能就被稀疏了；另外，如果我们的任务是需要用到距离较远的节点或边或节点块，这样一步一步的传播方式显然会是效果大打折扣。因此，我们可以采用一个<code>master node or (context vector)</code>的方式，来代表我们的全局信息。</p>
+<p><img src="/pic/GNN/7.png" alt=""></p>
+<p>所以根据图神经网络的结构来看，有一些可以调整的超参数，例如图神经网络层数（参数数量），聚合函数类型，消息传递的方式（节点到边，边到节点，etc.）通过实际任务来进行参数的调整。</p>
+<h3 id="杂项与后续"><a href="#杂项与后续" class="headerlink" title="杂项与后续"></a>杂项与后续</h3><h4 id="特殊的图"><a href="#特殊的图" class="headerlink" title="特殊的图"></a>特殊的图</h4><p>我们在上面构造图的时候，都是使用最简单的构造方式，但在实际应用中，我们可能需要不同种类的图，例如我们有多图、超图、超节点、层次图等等，我们也需要图神经网络来对这种图来进行预测和训练。</p>
+<p><img src="/pic/GNN/8.png" alt=""></p>
+<p><del>貌似这里就可以用超图来做生信？比如其中的一个超节点就可以表示一个苯环🤨</del></p>
+<h4 id="采样方法"><a href="#采样方法" class="headerlink" title="采样方法"></a>采样方法</h4><p>在训练图片或者文本的时候，我们通常是对于所有的训练集进行一定额度的批量采样（batch），部分的进行训练。最后计算loss，然后更新参数，再在下一个batch下进行训练。</p>
+<p>对于图而言，显然我们不能这样的训练，我们能做的就是选取一个一个的子图，在这些子图上面进行训练。这样对于我们选取多远的邻居就有一定的难度。例如我们选的太近可能会导致视野太窄，选的太远有又可能会有信息消失或者稀疏等情况出现。有一些方法来选择我们需要的子图：</p>
+<p>如果我们希望保留邻域级别的结构，一种方法是随机抽取一定数量的节点，即我们的节点集。然后添加与节点集相邻的距离为 k 的邻接节点，包括它们的边。每个邻域可视为一个单独的图，GNN 可在这些子图的批次上进行训练。由于所有相邻节点的邻域都不完整，因此可以掩盖损失，只考虑节点集。</p>
+<p>更有效的策略可能是先随机抽样一个节点，将其邻域扩大到距离 k，然后在扩大的集合中挑选其他节点。一旦构建了一定数量的节点、边或子图，就可以终止这些操作。如果情况允许，我们可以通过选取一个初始节点集，然后对一定数量的节点进行子采样（例如随机采样，或通过随机漫步或 Metropolis 算法）来构建恒定大小的邻域。</p>
+<h4 id="选取聚合函数"><a href="#选取聚合函数" class="headerlink" title="选取聚合函数"></a>选取聚合函数</h4><p>我们在进行边和节点的信息融合的时候，通常需要选择合适的聚合函数来进行消息传递。例如求和，取最大值，取平均等等，这也需要我们根据具体情况来选择。</p>
+<h4 id="边与节点"><a href="#边与节点" class="headerlink" title="边与节点"></a>边与节点</h4><p><strong>（PS:笔者的离散数学学的很差，可能这里写的会有一些错误）</strong></p>
+<p>我们针对图上边的某些特点做预测的时候，往往可以把边转化为节点来进行操作，这里我们可以使用<code>对偶图</code>来进行操作。</p>
+<p>通常我们对节点的操作要比对于边的操作要容易一些，因此我们使用对偶图的性质来把问题作为转化，使其进行简单化。</p>
+<h4 id="Attention-is-all-you-need-GAT"><a href="#Attention-is-all-you-need-GAT" class="headerlink" title="Attention is all you need(GAT)"></a>Attention is all you need(GAT)</h4><p>相同于NLP中的注意力机制，我们在GNN中也有这样的注意力机制。对于某一些任务，可能我们只是想侧重于某一些特定的节点，只需要他们的特征，这里我们就可以在其中加一个attention机制。这种图神经网络机制叫做<code>GAT</code>。</p>
+<p><img src="/pic/GNN/9.png" alt=""></p>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>本文参考网站<a target="_blank" rel="noopener" href="https://distill.pub/2021/gnn-intro/">GNN入门</a>。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/10/12/%E7%88%AC%E8%99%AB/" rel="prev" title="记录一次爬虫经历">
+      <i class="fa fa-chevron-left"></i> 记录一次爬虫经历
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="nav-number">1.</span> <span class="nav-text">为什么需要图神经网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%A1%A8%E7%A4%BA%E4%B8%80%E4%B8%AA%E5%9B%BE"><span class="nav-number">2.</span> <span class="nav-text">如何表示一个图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">图神经网络结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%82%E9%A1%B9%E4%B8%8E%E5%90%8E%E7%BB%AD"><span class="nav-number">4.</span> <span class="nav-text">杂项与后续</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E7%9A%84%E5%9B%BE"><span class="nav-number">4.1.</span> <span class="nav-text">特殊的图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%87%87%E6%A0%B7%E6%96%B9%E6%B3%95"><span class="nav-number">4.2.</span> <span class="nav-text">采样方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%89%E5%8F%96%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="nav-number">4.3.</span> <span class="nav-text">选取聚合函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%B9%E4%B8%8E%E8%8A%82%E7%82%B9"><span class="nav-number">4.4.</span> <span class="nav-text">边与节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Attention-is-all-you-need-GAT"><span class="nav-number">4.5.</span> <span class="nav-text">Attention is all you need(GAT)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="PeterQwQ"
+      src="/images/Cache_4f3c05133e725b89..jpg">
+  <p class="site-author-name" itemprop="name">PeterQwQ</p>
+  <div class="site-description" itemprop="description">后知后觉又过了一个秋</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Uestc-Young" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Uestc-Young" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2126015288@qq.com" title="E-Mail → mailto:2126015288@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">PeterQwQ</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
