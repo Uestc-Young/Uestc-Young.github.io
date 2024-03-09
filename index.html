@@ -192,7 +192,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-03-09 20:15:01 / 修改时间：20:15:45" itemprop="dateCreated datePublished" datetime="2024-03-09T20:15:01+08:00">2024-03-09</time>
+              <time title="创建时间：2024-03-09 20:15:01 / 修改时间：20:18:27" itemprop="dateCreated datePublished" datetime="2024-03-09T20:15:01+08:00">2024-03-09</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -223,46 +223,14 @@
 <p>Github源代码：<a target="_blank" rel="noopener" href="https://github.com/OpenDriveLab/HDGT">HDGT: Heterogeneous Driving Graph Transformer for Multi-Agent Trajectory Prediction via Scene Encoding</a></p>
 <h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>对于自动驾驶领域的轨迹预测下游任务而言，目前的主流方案是对于场景中的非结构化数据进行向量化处理，然后运用深度学习的方法来进行学习与训练。然而目前为止还没有一个很好的编码方案来对这些非结构化的数据进行建模。本文提出了一种基于异构图的方法进行建模，对于每一个节点，都建立了一个以自己为中心的相对坐标系，使其能够在自己的本地坐标系下处理其他对象的相对时空状态信息，同时保持了所有节点和边的对称性，达到同时进行多个agent预测的目的。</p>
 <h3 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h3><h4 id="Heterogeneous-Graph-Neural-Networks"><a href="#Heterogeneous-Graph-Neural-Networks" class="headerlink" title="Heterogeneous Graph Neural Networks"></a>Heterogeneous Graph Neural Networks</h4><p>异构图神经网络被用在轨迹预测方向，主要体现在在一个交通场景中，图中的节点以及节点之间的相对关系可能并不是唯一的。例如可能有lane-agent，agent-agent，lane-lane等等多个不同的关系。这里可以使用异构图来很好的进行建模，保留这些相对关系。</p>
-<h4 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h4><p>传统的transformer通常由两个核心组成：attention-based模块以及feed-forward模块。在之前的轨迹预测任务中，通常都是使用一组共享的参数来进行地图上元素信息的传递和融合，这样忽略了各个元素之间的异构性。在本文中通过它们的语义关系连接节点，并使用类型特定的参数进行节点和边嵌入的聚合和更新。此外，所有节点都在它们的本地坐标系中处理信息。</p>
-<h4 id="Scene-Encoder-For-Trajectory-Prediction"><a href="#Scene-Encoder-For-Trajectory-Prediction" class="headerlink" title="Scene Encoder For Trajectory Prediction"></a>Scene Encoder For Trajectory Prediction</h4><p>在轨迹预测任务中，对于场景的建模是十分重要的。在现在的工作中，不仅需要考虑agent之间的作用，同时还要考虑地图元素（车道、交通信号灯等）对于行车轨迹的影响。现在通常使用向量化的方式来编码地图元素，例如用LSTM、1D CNN等来处理时间数据，用PointNet来处理折线，用GNN编码元素之间的关系。</p>
-<h4 id="Output-Decoder-for-Trajectory-Prediction"><a href="#Output-Decoder-for-Trajectory-Prediction" class="headerlink" title="Output Decoder for Trajectory Prediction"></a>Output Decoder for Trajectory Prediction</h4><p>过去的研究中有很多对于编码后的数据的解码进行了研究，在此不多赘述。</p>
-<p>本文主要研究的是如何高质量的使用异构图对于地图上的元素进行编码，即encoder部分。</p>
-<h3 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h3><p><img src="../pic/PaperReading-HDGT/pipeline.png" alt=""></p>
-<p>轨迹预测的输入可以整体分为两个模块：agent过去时间的状态和现在的地图元素。最终需要得到的应该是在后面T个时间帧内，每一个agent可能的轨迹以及相应的置信分数。</p>
-<h4 id="Construction-of-the-Heterogeneous-Graph"><a href="#Construction-of-the-Heterogeneous-Graph" class="headerlink" title="Construction of the Heterogeneous Graph"></a>Construction of the Heterogeneous Graph</h4><p>根据异构图的概念，对于一个交通场景中的元素，根据其类型的不同进行相应的建模处理。在HDGT中，一条边 $e: u → v$ 是由起始节点$u$和终点节点$v$以及它们之间的关系共同决定的。</p>
-<p>对于agent，计算最后的时间帧上它和其它元素的距离；对于折线形状的元素，取中点为其坐标；对于多边形形状的元素，取几何中心为其坐标。对于车道节点，将它们与周围的车道节点连接，并且有左、右、入口和出口四种类型。针对车道长度差异较大的问题，将长度大于阈值的车道划分为长度相似的短车道，以确保所有车道节点具有类似的输入。通过这样的建模可以构建需要的节点集和邻接矩阵。</p>
-<p>下面是原论文中的伪代码表示：</p>
-<p><img src="../pic/PaperReading-HDGT/code.png" alt=""></p>
-<h4 id="Relative-Spatial-Relation-Encoding"><a href="#Relative-Spatial-Relation-Encoding" class="headerlink" title="Relative Spatial Relation Encoding"></a>Relative Spatial Relation Encoding</h4><ol>
-<li><p><strong>Global View to Egocentric View</strong></p>
-<p>在这一部分，对于每一个节点元素，文章设定了一个以他们自己为中心的相对坐标系，记作 $(x<em>{ref},y</em>{ref},\theta<em>{ref})$ 。对于节点的坐标，首先，都进行$(x,y)-(x</em>{ref},y<em>{ref})$的操作，来保证是处于自己的相对坐标系中；其次，设定一个旋转矩阵$R=\begin{bmatrix}<br>  cos-\theta</em>{ref}&amp;-sin-\theta<em>{ref} \<br>  sin-\theta</em>{ref}&amp;cos-\theta<em>{ref}<br>\end{bmatrix}$，用这个旋转矩阵和位置坐标${(x,y)}^T$和速度${(velocity</em>{x},velocity<em>y)}^T$做点积，得到相应的相对坐标以及速度。对于不同的地图元素，选取的相对坐标系的原点$(x</em>{ref},y_{ref})$也会不同。</p>
-</li>
-<li><p><strong>Node Encoding</strong></p>
-<p>上面经过处理后的地图元素已经处在自己的相对坐标系下，但是仍然是非结构化的。因此，需要将元素进行向量化的编码。在这篇论文中，对于所有的agent元素，使用1D CNN网络来进行向量化处理；对于所有的地图元素，使用简化的PointNet来进行处理。对于子类信息，例如车道单行/双行，道路线类型虚线/实线等，采用可学习的嵌入进行编码，然后将它们与从1D CNN或PointNet获得的几何特征进行连接。</p>
-</li>
-<li><p><strong>Edge Encoding</strong></p>
-<p>对于一条边 $e: u → v$，定义边的特征是$u$在$v$的坐标系下的特征。对于$u,v$而言，它们分别的对应的自己的相对坐标系表示是：$(x^u<em>{ref},y^u</em>{ref},\theta^u<em>{ref})$ ,$(x^v</em>{ref},y^v<em>{ref},\theta^v</em>{ref})$ 。因此，需要的信息是：$\Delta Pose<em>{u→v} =  (x^v</em>{ref} − x^u<em>{ref}, y^v</em>{ref} − y^u<em>{ref}, cos(θ^v</em>{ref} − θ^u<em>{ref}),sin(θ^v</em>{ref} − θ^u<em>{ref})) = (∆x</em>{u→v}, ∆y<em>{u→v}, cos∆θ</em>{u→v},sin ∆θ<em>{u→v})$。用一层MLP来进行边的编码操作：$e^0</em>{u→v} = MLP(concat[u^0, \Delta Pose_{u→v}])$.</p>
-</li>
-</ol>
-<h4 id="Heterogeneous-Driving-Graph-Transformer-Layer"><a href="#Heterogeneous-Driving-Graph-Transformer-Layer" class="headerlink" title="Heterogeneous Driving Graph Transformer Layer"></a>Heterogeneous Driving Graph Transformer Layer</h4><p>在HDGT中有两种方式聚合函数：$\rho^V$应用在节点上，聚合每个节点的入边的特征；$\rho^\xi$应用在边上，聚合这个边的源节点的信息。</p>
-<ol>
-<li><p><strong>Node Aggregation and Update</strong></p>
-<p>由于transformer之前是用来做NLP的任务，直接用来做轨迹预测任务效果必然不佳。同时，一个节点的入边特征类型可能也有很多种，因此，文章使用了一种分层的transformer的形式。的将节点表示为Q，入边的特征表示为K，V，这样就可以运用相应的注意力机制。最后把不同类型节点得到的结果concat起来即可。</p>
-</li>
-<li><p><strong>Edge Aggregation and Update</strong></p>
-<p>同理，对于边而言，也分为不同的类型。因此，文章也对其做了分类的处理。对于边信息的更新采用了这样方式：$e^k<em>{u→v} = MLP</em>{type(u→v)} (concat(u^{k−1},\Delta Pose<em>{u→v}, e^{k−1}</em>{u→v}))$。</p>
-</li>
-</ol>
-<h4 id="Output-Head-and-Training-Objective"><a href="#Output-Head-and-Training-Objective" class="headerlink" title="Output Head and Training Objective"></a>Output Head and Training Objective</h4><p>采用回归MLP和分类MLP组合的模式进行损失的计算。对每一个agent而言，将HDGT的最后一层的输出作为隐藏表示。一个MLP模块用来做回归（张量大小：N*K*T<em>2），一个MLP模块用来为每一个轨迹生成置信度（张量大小：N\</em>K）。</p>
-<h3 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h3><h4 id="Metric"><a href="#Metric" class="headerlink" title="Metric"></a>Metric</h4><p>用来评估的标准和很多轨迹预测的标准一样，是用了<code>minADE(Minimum Average Displacement Error)</code>，<code>minFDE(Minimum Final Displacement Error)</code>，<code>MR(Missing Rate)</code>三个标准。</p>
-<h4 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h4><p>用了两个dataset来做evaluation：<code>INTERACTION Dataset</code>和 <code>Waymo Open Motion Dataset</code> </p>
-<h4 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h4><p>INTERACTION Dataset：</p>
-<p><img src="../pic/PaperReading-HDGT/interaction.png" alt=""></p>
-<p>Waymo Open Motion Dataset：</p>
-<p><img src="../pic/PaperReading-HDGT/waymo.png" alt=""></p>
-<p>后续文章还有一些消融实验，可视化等等，这里便不在赘述，可以自行查看原文。</p>
-<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>文章提出了一种基于异构图的方法来提取更好的轨迹预测表示。它将驾驶场景建模为一个异构图，并将Transformer作为图聚合和更新函数。当进行聚合时，空间特征被归一化到局部坐标系中。所提出的方法在两个最近的大规模竞争性基准测试中取得了最先进的结果。消融研究验证了文章中每个模块的有效性。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/03/09/PaperReading-HDGT/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1092,7 +1060,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
