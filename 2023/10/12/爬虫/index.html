@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peterqwq.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="之前只是听说过python可以使用beautifulsoup或者是selenium之类的库进行爬虫的操作，也听说过一些理论，例如能爬API就爬API，爬不了API再去爬网页。 这次需要自己手动的去爬取存储漏洞代码的网站SARD以及Github commit。 爬取漏洞代码其实这里我是用selenium模拟了浏览器的这样一个功能，但是后面发现只要爬API就行了。 Selenium模拟浏览器首先需要安">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记录一次爬虫经历">
+<meta property="og:url" content="http://peterqwq.top/2023/10/12/%E7%88%AC%E8%99%AB/index.html">
+<meta property="og:site_name" content="PeterQwQ">
+<meta property="og:description" content="之前只是听说过python可以使用beautifulsoup或者是selenium之类的库进行爬虫的操作，也听说过一些理论，例如能爬API就爬API，爬不了API再去爬网页。 这次需要自己手动的去爬取存储漏洞代码的网站SARD以及Github commit。 爬取漏洞代码其实这里我是用selenium模拟了浏览器的这样一个功能，但是后面发现只要爬API就行了。 Selenium模拟浏览器首先需要安">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://peterqwq.top/pic/1.png">
+<meta property="og:image" content="http://peterqwq.top/pic/2.png">
+<meta property="og:image" content="http://peterqwq.top/pic/3.png">
+<meta property="article:published_time" content="2023-10-12T06:22:10.000Z">
+<meta property="article:modified_time" content="2024-04-16T18:13:32.472Z">
+<meta property="article:author" content="PeterQwQ">
+<meta property="article:tag" content="Data Science">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://peterqwq.top/pic/1.png">
+
+<link rel="canonical" href="http://peterqwq.top/2023/10/12/%E7%88%AC%E8%99%AB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>记录一次爬虫经历 | PeterQwQ</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">PeterQwQ</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-link">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://peterqwq.top/2023/10/12/%E7%88%AC%E8%99%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Cache_4f3c05133e725b89..jpg">
+      <meta itemprop="name" content="PeterQwQ">
+      <meta itemprop="description" content="后知后觉又过了一个秋">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PeterQwQ">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          记录一次爬虫经历
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-10-12 14:22:10" itemprop="dateCreated datePublished" datetime="2023-10-12T14:22:10+08:00">2023-10-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-17 02:13:32" itemprop="dateModified" datetime="2024-04-17T02:13:32+08:00">2024-04-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>之前只是听说过<code>python</code>可以使用<code>beautifulsoup</code>或者是<code>selenium</code>之类的库进行爬虫的操作，也听说过一些理论，例如能爬API就爬API，爬不了API再去爬网页。</p>
+<p>这次需要自己手动的去爬取存储漏洞代码的网站<a target="_blank" rel="noopener" href="https://samate.nist.gov/SARD/test-cases">SARD</a>以及<code>Github commit</code>。</p>
+<h3 id="爬取漏洞代码"><a href="#爬取漏洞代码" class="headerlink" title="爬取漏洞代码"></a>爬取漏洞代码</h3><p>其实这里我是用<code>selenium</code>模拟了浏览器的这样一个功能，但是后面发现只要爬API就行了。</p>
+<h4 id="Selenium模拟浏览器"><a href="#Selenium模拟浏览器" class="headerlink" title="Selenium模拟浏览器"></a>Selenium模拟浏览器</h4><p>首先需要安装相应浏览器的驱动，我用Edge比较多，因此选择了Edge的driver，实际上你用哪个就在网上下哪一个然后安装到和python安装目录一样的路径下就ok了。</p>
+<p>观察这个网页，发现我们需要找的代码其实是一个滚动的状态，就是说随着鼠标的下滑，它之前的代码会从页面消失，后续的代码会在页面展现，单纯的使用一个selector根据它的class来提取里面的代码肯定是不行的。</p>
+<span id="more"></span>
+<p>我采取的解决方法是模拟鼠标滑轮的方法，先观察一下它到底是怎么滑的，来确定每次下滑的合理的px区间，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">scroll_and_extract_code</span>(<span class="params">driver</span>):</span><br><span class="line">    code_content = <span class="string">&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 获取页面总高度</span></span><br><span class="line">    js_code = <span class="string">&quot;return document.querySelector(&#x27;#right-pane &gt; code &gt; div &gt; div.CodeMirror-vscrollbar&#x27;).scrollHeight;&quot;</span></span><br><span class="line">    total_height = driver.execute_script(js_code)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment"># 使用JavaScript来提取新的CodeMirror-line元素的文本</span></span><br><span class="line">        js_code = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        var codeContent = &quot;&quot;;</span></span><br><span class="line"><span class="string">        var elements = document.querySelectorAll(&#x27;.CodeMirror-line:not(.processed)&#x27;);</span></span><br><span class="line"><span class="string">        elements.forEach(function(element) &#123;</span></span><br><span class="line"><span class="string">            codeContent += element.textContent + &quot;\\n&quot;;</span></span><br><span class="line"><span class="string">            element.classList.add(&#x27;processed&#x27;);</span></span><br><span class="line"><span class="string">        &#125;);</span></span><br><span class="line"><span class="string">        return codeContent;</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        new_code_text = driver.execute_script(js_code)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 将新的文本添加到code_content中</span></span><br><span class="line">        code_content += new_code_text</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 滚动页面</span></span><br><span class="line">        js_code = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        var el = document.querySelector(&quot;#right-pane &gt; code &gt; div &gt; div.CodeMirror-vscrollbar&quot;);</span></span><br><span class="line"><span class="string">        el.scrollTo(0, el.scrollTop + 760);</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        driver.execute_script(js_code)</span><br><span class="line">        time.sleep(<span class="number">1</span>) </span><br><span class="line"></span><br><span class="line">        js_code = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        var el = document.querySelector(&quot;#right-pane &gt; code &gt; div &gt; div.CodeMirror-vscrollbar&quot;);</span></span><br><span class="line"><span class="string">        return &#123;</span></span><br><span class="line"><span class="string">            scrollTop: el.scrollTop,</span></span><br><span class="line"><span class="string">            clientHeight: el.clientHeight</span></span><br><span class="line"><span class="string">        &#125;;</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        element_scroll_info = driver.execute_script(js_code)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 检查是否元素已滚动到最底端</span></span><br><span class="line">        <span class="keyword">if</span> element_scroll_info[<span class="string">&quot;scrollTop&quot;</span>] + element_scroll_info[<span class="string">&quot;clientHeight&quot;</span>] &gt;= total_height:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="comment"># 使用显式等待等待新元素的加载</span></span><br><span class="line">                WebDriverWait(driver, <span class="number">10</span>).until(EC.element_to_be_clickable((By.CSS_SELECTOR, <span class="string">&#x27;.CodeMirror-line:not(.processed)&#x27;</span>)))</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                <span class="comment"># 如果等待超时，说明没有新元素出现，可以退出循环</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> code_content</span><br></pre></td></tr></table></figure>
+<p>这样就可以一次性的爬取一个网页里面我们需要的内容，同时，这里的小trick就是使用一个<code>js</code>代码对于查找过的相应的内容进行记录：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> elements = <span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;.CodeMirror-line:not(.processed)&#x27;</span>);</span><br><span class="line">        elements.<span class="title function_">forEach</span>(<span class="keyword">function</span>(<span class="params">element</span>) &#123;</span><br><span class="line">            codeContent += element.<span class="property">textContent</span> + <span class="string">&quot;\\n&quot;</span>;</span><br><span class="line">            element.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&#x27;processed&#x27;</span>);</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+<p>通过这样的手段就可以完整的提取内容同时不存在内容重复或者遗漏的问题啦，但是用selenium模拟的最大缺点就是：太慢了，所以我们还是要争取使用爬取API这种方法来进行内容的获取。</p>
+<p><del>其实感觉selenium就是写点js脚本然后用python运行？</del></p>
+<h4 id="爬取API"><a href="#爬取API" class="headerlink" title="爬取API"></a>爬取API</h4><p>首先打开这个网页，F12之后点击网络的选项，然后刷新网页，看看它传过来的什么东西。</p>
+<p>理论上来说，页面上展示了我们需要的代码，那么肯定是从后台获取过来的。这样我们就有两种爬取的策略：</p>
+<ul>
+<li>第一种，如果不是通过后台的API获取的话，我们可以观察一下这个动态的代码是如何生成的。它肯定是通过某种<code>js</code>代码来实现的，因此我们可以分析那个<code>js</code>代码，让它完整的展现代码即可。</li>
+<li>第二种，也是比较简单易懂同时也是我们采取的这种方法：寻找一下它爬取的API。如果能找到它的API，那么直接<code>requests.get()</code>即可。</li>
+</ul>
+<p>我们检查一下这个网页：</p>
+<p><img src="/pic/1.png" alt="image-20231012215154521"></p>
+<p>首先反正可能不可能是那些什么icon啊，css啊之类的，由于这个网站比较友好，我们可以很清楚的看见：</p>
+<p><img src="/pic/2.png" alt="image-20231012215320882"></p>
+<p>ok，他都叫sample了不如点进去看一下，然后我们就跳转到这个网页：</p>
+<p><img src="/pic/3.png" alt="image-20231012215320882"></p>
+<p>合理推测，后面的代码都会是这种形式，然后就发现推测对了。同时这个网站提供了这个东西的uri，可以通过它的API来获取，那就没有什么疑难的问题要解决了，后续就交给<code>requests.get()</code>和时间慢慢爬就行了。</p>
+<h3 id="爬取GitHub的commit"><a href="#爬取GitHub的commit" class="headerlink" title="爬取GitHub的commit"></a>爬取GitHub的commit</h3><figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">👉 <span class="keyword">To</span> be continued<span class="params">...</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Data-Science/" rel="tag"># Data Science</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/09/12/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E9%9D%A2%E8%AF%95%EF%BC%88%E4%B8%B4%E6%97%B6%E6%8A%B1%E4%BD%9B%E8%84%9A%EF%BC%89/" rel="prev" title="数据分析面试（临时抱佛脚）">
+      <i class="fa fa-chevron-left"></i> 数据分析面试（临时抱佛脚）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/10/21/GNN%E5%AD%A6%E4%B9%A0/" rel="next" title="图神经网络入门">
+      图神经网络入门 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%88%AC%E5%8F%96%E6%BC%8F%E6%B4%9E%E4%BB%A3%E7%A0%81"><span class="nav-number">1.</span> <span class="nav-text">爬取漏洞代码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Selenium%E6%A8%A1%E6%8B%9F%E6%B5%8F%E8%A7%88%E5%99%A8"><span class="nav-number">1.1.</span> <span class="nav-text">Selenium模拟浏览器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%88%AC%E5%8F%96API"><span class="nav-number">1.2.</span> <span class="nav-text">爬取API</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%88%AC%E5%8F%96GitHub%E7%9A%84commit"><span class="nav-number">2.</span> <span class="nav-text">爬取GitHub的commit</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="PeterQwQ"
+      src="/images/Cache_4f3c05133e725b89..jpg">
+  <p class="site-author-name" itemprop="name">PeterQwQ</p>
+  <div class="site-description" itemprop="description">后知后觉又过了一个秋</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Uestc-Young" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Uestc-Young" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2126015288@qq.com" title="E-Mail → mailto:2126015288@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">PeterQwQ</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
