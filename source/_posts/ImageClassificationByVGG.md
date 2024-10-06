@@ -5,7 +5,6 @@ categories: [Pytorch]
 tags: 
 - [Computer Vision]
 - [Machine Learning]
-typora-root-url: ..
 ---
 
 在一个只有300张的数据集，100张验证集的dataset上玩一玩（主要是熟悉一下代码，李沐的课程代码都在d2l中很少自己手写代码）
@@ -177,7 +176,7 @@ train_model(net,dataloader_dict,loss,optimizer,5)
 
 结果如下：
 
-![](/pic/ImageClassificationByVGG/antsandbees-16835422086552.png)
+![](../pic/ImageClassificationByVGG/antsandbees.png)
 
 本人略微调了一下书中原文给的``lr``，然后进行了5个``epoch``的训练，``Acc``还是较为高的。
 
