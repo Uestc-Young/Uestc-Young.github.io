@@ -1,5 +1,5 @@
 ---
-title: leetcode128
+title: Leetcode 128
 date: 2024-10-17 16:39:49
 tags: [Algorithm]
 mathjax: true
