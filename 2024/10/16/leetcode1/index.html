@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"peterqwq.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="力扣hot 100第一题 两数之和 最暴力的想法就是直接两层循环，遍历所有的可能性，找到符合条件的两个数即可。时间复杂度是$O(n^2)$。123456class Solution:    def twoSum(self, nums: List[int], target: int) -&gt; List[int]:        for i in range(len(nums)):">
+  <meta name="description" content="两数之和 最暴力的想法就是直接两层循环，遍历所有的可能性，找到符合条件的两个数即可。时间复杂度是$O(n^2)$。123456class Solution:    def twoSum(self, nums: List[int], target: int) -&gt; List[int]:        for i in range(len(nums)):            for j in">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode 1">
 <meta property="og:url" content="http://peterqwq.top/2024/10/16/leetcode1/index.html">
 <meta property="og:site_name" content="PeterQwQ">
-<meta property="og:description" content="力扣hot 100第一题 两数之和 最暴力的想法就是直接两层循环，遍历所有的可能性，找到符合条件的两个数即可。时间复杂度是$O(n^2)$。123456class Solution:    def twoSum(self, nums: List[int], target: int) -&gt; List[int]:        for i in range(len(nums)):">
+<meta property="og:description" content="两数之和 最暴力的想法就是直接两层循环，遍历所有的可能性，找到符合条件的两个数即可。时间复杂度是$O(n^2)$。123456class Solution:    def twoSum(self, nums: List[int], target: int) -&gt; List[int]:        for i in range(len(nums)):            for j in">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-10-16T12:01:31.000Z">
-<meta property="article:modified_time" content="2024-10-16T12:16:25.169Z">
+<meta property="article:modified_time" content="2024-10-17T08:43:13.786Z">
 <meta property="article:author" content="PeterQwQ">
 <meta property="article:tag" content="Algorithm">
 <meta name="twitter:card" content="summary">
@@ -193,10 +193,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-10-16 20:01:31 / 修改时间：20:16:25" itemprop="dateCreated datePublished" datetime="2024-10-16T20:01:31+08:00">2024-10-16</time>
+              <time title="创建时间：2024-10-16 20:01:31" itemprop="dateCreated datePublished" datetime="2024-10-16T20:01:31+08:00">2024-10-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-17 16:43:13" itemprop="dateModified" datetime="2024-10-17T16:43:13+08:00">2024-10-17</time>
+              </span>
 
           
 
@@ -209,9 +215,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>力扣hot 100第一题 两数之和</p>
+        <p>两数之和</p>
 <p>最暴力的想法就是直接两层循环，遍历所有的可能性，找到符合条件的两个数即可。时间复杂度是$O(n^2)$。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">twoSum</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>], target: <span class="built_in">int</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(nums)):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i+<span class="number">1</span>, <span class="built_in">len</span>(nums)):</span><br><span class="line">                <span class="keyword">if</span> nums[i] + nums[j] == target:</span><br><span class="line">                    <span class="keyword">return</span> i, j</span><br></pre></td></tr></table></figure></p>
-<p>这里可以用hash表来优化，时间复杂度是$O(n)$。这里能优化是因为数组中的元素是唯一的，所以可以用元素的值作为key，元素的下标作为value，这样就可以通过查找target-num是否在hash表中来判断是否存在这样的两个数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">twoSum</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>], target: <span class="built_in">int</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">        store = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> i, num <span class="keyword">in</span> <span class="built_in">enumerate</span>(nums):</span><br><span class="line">            <span class="keyword">if</span> target - num <span class="keyword">in</span> store:</span><br><span class="line">                <span class="keyword">return</span> [store[target-num], i]</span><br><span class="line">            store[num] = i</span><br><span class="line">        <span class="keyword">return</span> []</span><br></pre></td></tr></table></figure></p>
+<p>这里可以用hash表来优化，时间复杂度是$O(n)$。用元素的值作为key，元素的下标作为value，这样就可以通过查找target-num是否在hash表中来判断是否存在这样的两个数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">twoSum</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>], target: <span class="built_in">int</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">        store = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> i, num <span class="keyword">in</span> <span class="built_in">enumerate</span>(nums):</span><br><span class="line">            <span class="keyword">if</span> target - num <span class="keyword">in</span> store:</span><br><span class="line">                <span class="keyword">return</span> [store[target-num], i]</span><br><span class="line">            store[num] = i</span><br><span class="line">        <span class="keyword">return</span> []</span><br></pre></td></tr></table></figure></p>
 
     </div>
 
@@ -310,7 +316,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
