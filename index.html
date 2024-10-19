@@ -167,6 +167,70 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://peterqwq.top/2024/10/19/leetcode11/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Cache_4f3c05133e725b89..jpg">
+      <meta itemprop="name" content="PeterQwQ">
+      <meta itemprop="description" content="后知后觉又过了一个秋">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PeterQwQ">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/10/19/leetcode11/" class="post-title-link" itemprop="url">Leetcode 11</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-10-19 11:31:50 / 修改时间：20:50:38" itemprop="dateCreated datePublished" datetime="2024-10-19T11:31:50+08:00">2024-10-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>给定一个长度为 <code>n</code> 的整数数组 <code>height</code> 。有 <code>n</code> 条垂线，第 <code>i</code> 条线的两个端点是 <code>(i, 0)</code> 和 <code>(i, height[i])</code> 。</p>
+<p>找出其中的两条线，使得它们与 <code>x</code> 轴共同构成的容器可以容纳最多的水。</p>
+<p>返回容器可以储存的最大水量。</p>
+<p>一开始想到的暴力<code>O(n^2)</code>的方法，遍历所有的组合，找到最大的面积。不过显然会TLE。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maxArea</span>(<span class="params">self, height: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(height)-<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i+<span class="number">1</span>, <span class="built_in">len</span>(height)):</span><br><span class="line">                bigger_height = <span class="built_in">min</span>(height[i], height[j])</span><br><span class="line">                area = bigger_height * (j - i)</span><br><span class="line">                <span class="comment"># print(area)</span></span><br><span class="line">                <span class="keyword">if</span> area &lt;= ans:</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    ans = area</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure></p>
+<p>假设我们有两个指针，指向数组的两个位置，分别对应着高度 <code>x, y (x &lt;= y)</code>，不妨假设他们之间的距离是 <code>t</code> 。那么这两个指针之间的面积就是 <code>min(x, y) * t = x * t</code> 。此时我们如果移动高的指针，得到新的 <code>y_1</code>。分两种情况讨论，如果 <code>y_1 &lt; y</code>，那么新的面积就是 <code>min(x, y_1) * (t-1) &lt;= min(x, y) * t</code>。如果 <code>y_1 &gt;= y</code>，那么新的面积就是 <code>min(x, y_1) * (t-1)= x * (t-1)</code>。这样可以看出，如果我们移动高的指针，面积只会变小，所以我们应该移动矮的指针。</p>
+<p>换句话说，其实可以类比木桶的“短板效应”，我们应该移动短的那一边，因为移动长的那一边，不管怎么移动，都不会使得面积变大。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maxArea</span>(<span class="params">self, height: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        i, j = <span class="number">0</span>, <span class="built_in">len</span>(height)-<span class="number">1</span></span><br><span class="line">        ans = (<span class="built_in">len</span>(height)-<span class="number">1</span>) * <span class="built_in">min</span>(height[i], height[j])</span><br><span class="line">        <span class="keyword">while</span> i != j:</span><br><span class="line">            <span class="keyword">if</span> height[i] &lt;= height[j]:</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                j -= <span class="number">1</span></span><br><span class="line">            now_area = (j - i) * <span class="built_in">min</span>(height[i], height[j])</span><br><span class="line">            <span class="keyword">if</span> now_area &gt; ans:</span><br><span class="line">                ans = now_area</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://peterqwq.top/2024/10/19/leetcode283/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -807,94 +871,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://peterqwq.top/2023/10/21/GNN%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Cache_4f3c05133e725b89..jpg">
-      <meta itemprop="name" content="PeterQwQ">
-      <meta itemprop="description" content="后知后觉又过了一个秋">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PeterQwQ">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/10/21/GNN%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">图神经网络入门</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-10-21 17:51:55" itemprop="dateCreated datePublished" datetime="2023-10-21T17:51:55+08:00">2023-10-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-17 02:13:32" itemprop="dateModified" datetime="2024-04-17T02:13:32+08:00">2024-04-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Pytorch/" itemprop="url" rel="index"><span itemprop="name">Pytorch</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="为什么需要图神经网络"><a href="#为什么需要图神经网络" class="headerlink" title="为什么需要图神经网络"></a>为什么需要图神经网络</h3><p>对于一个图而言，我们通常注意于三种特征：</p>
-<ol>
-<li>整个图的特征，例如图中有多少个节点，多少条边。</li>
-<li>图中节点的意义，例如对于一个图片的图表示，可能一个节点就表示了一幅图片的一个像素点。</li>
-<li>图中边的意义，例如对于社交网络而言，两个节点之间有边就表示两个人是有联系的，反之则没有联系。</li>
-</ol>
-<p>因此，图神经网络的任务也通常集中于这三种，我们可以分为<code>Graph-level</code>,<code>Node-level</code>以及<code>Edge-level</code>的任务。</p>
-<h3 id="如何表示一个图"><a href="#如何表示一个图" class="headerlink" title="如何表示一个图"></a>如何表示一个图</h3><p>无论要解决什么样的任务，首要任务肯定是要先表示出来一个图，比较容易想到的解决方案就是构造<code>邻接矩阵</code>。但是邻接矩阵有它的缺点，就是太过于稀疏了，我们在学Linear Algebra的时候都知道，稀疏矩阵其实是一个不好的东西，同时对于我们计算机而言，稀疏矩阵同时占用了大量没用的内存，这对于我们以后的计算肯定是会降低性能的，所以我们这里可以采用构建<code>邻接表</code>的形式来表示一个图。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/10/21/GNN%E5%AD%A6%E4%B9%A0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -966,7 +942,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
