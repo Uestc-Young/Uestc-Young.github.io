@@ -167,6 +167,72 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://peterqwq.top/2024/10/20/leetcode15/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Cache_4f3c05133e725b89..jpg">
+      <meta itemprop="name" content="PeterQwQ">
+      <meta itemprop="description" content="后知后觉又过了一个秋">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PeterQwQ">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/10/20/leetcode15/" class="post-title-link" itemprop="url">Leetcode 15</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-10-20 10:54:45 / 修改时间：18:55:22" itemprop="dateCreated datePublished" datetime="2024-10-20T10:54:45+08:00">2024-10-20</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>给你一个整数数组 <code>nums</code> ，判断是否存在三元组 <code>[nums[i], nums[j], nums[k]]</code> 满足 <code>i != j、i != k 且 j != k</code> ，同时还满足 <code>nums[i] + nums[j] + nums[k] == 0</code> 。请你返回所有和为 <code>0</code> 且不重复的三元组。</p>
+<p>注意：答案中不可以包含重复的三元组。</p>
+<p>首先，最暴力的方法就是 <code>O(n^3)</code> 的时间复杂度，直接三重循环，找到所有的三元组，然后再去重。</p>
+<p>但是在固定一个数之后，本质上又转化成了两数之和的问题，所以可以用双指针来优化一下。</p>
+<p>这是一个复杂度为 <code>O(n^2)</code> 的算法，通过了 <code>308/313</code> 的测试用例。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">threeSum</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]:</span><br><span class="line">        ans = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(nums)):</span><br><span class="line">            target = -nums[i]</span><br><span class="line">            seen = &#123;&#125;</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i+<span class="number">1</span>, <span class="built_in">len</span>(nums)):</span><br><span class="line">                target_list = <span class="built_in">sorted</span>([-target, nums[j], target-nums[j]])</span><br><span class="line">                <span class="keyword">if</span> target - nums[j] <span class="keyword">in</span> seen <span class="keyword">and</span> target_list <span class="keyword">not</span> <span class="keyword">in</span> ans:</span><br><span class="line">                    ans.append(target_list)</span><br><span class="line">                seen[nums[j]] = j        </span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure></p>
+<p>上面的算法在中间的去重操作上还需要遍历一次 <code>ans</code> 数组，所以可以用一个 <code>set</code> 来代替 <code>ans</code> 数组，这样就不需要再去重了。而且在python中，<code>set</code> 的查找操作 <code>in</code> 是 <code>O(1)</code> 的时间复杂度，所以这样的优化是可行的。</p>
+<p>这种算法时间复杂度是 <code>O(n^2)</code>，通过了 <code>312/313</code> 的测试用例。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">threeSum</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]:</span><br><span class="line">        ans = <span class="built_in">set</span>()  <span class="comment"># 用集合去重</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(nums)):</span><br><span class="line">            target = -nums[i]</span><br><span class="line">            seen = &#123;&#125;</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i + <span class="number">1</span>, <span class="built_in">len</span>(nums)):</span><br><span class="line">                <span class="keyword">if</span> target - nums[j] <span class="keyword">in</span> seen:</span><br><span class="line">                    triplet = <span class="built_in">tuple</span>(<span class="built_in">sorted</span>([-target, nums[j], target - nums[j]]))</span><br><span class="line">                    ans.add(triplet)  <span class="comment"># 直接将结果加入集合</span></span><br><span class="line">                seen[nums[j]] = j</span><br><span class="line">        <span class="keyword">return</span> [<span class="built_in">list</span>(triplet) <span class="keyword">for</span> triplet <span class="keyword">in</span> ans]  <span class="comment"># 将最终结果转为列表返回</span></span><br></pre></td></tr></table></figure></p>
+<p>看起来暴力是不行的，那么就换一种思路。对于原数组我们在一开始就进行排序，然后固定一个数，再用双指针来找另外两个数。在寻找另外两个数的时候，如果两个数的和大于目标值，那么右指针左移；如果两个数的和小于目标值，那么左指针右移；如果两个数的和等于目标值，那么就找到了一个三元组。这种算法的时间复杂度是 <code>O(n^2)</code>。同时在这里，固定第一个元素的时候，如果和上一个元素相同，那么就跳过这个元素，因为这个元素已经找过了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">threeSum</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]:</span><br><span class="line">        sorted_list = <span class="built_in">sorted</span>(nums)</span><br><span class="line">        ans = <span class="built_in">set</span>()</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(sorted_list)):</span><br><span class="line">            <span class="keyword">if</span> i &gt; <span class="number">0</span> <span class="keyword">and</span> sorted_list[i] == sorted_list[i-<span class="number">1</span>]:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            target = -sorted_list[i]</span><br><span class="line">            left = i+<span class="number">1</span></span><br><span class="line">            right = <span class="built_in">len</span>(sorted_list)-<span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> left &lt; right:</span><br><span class="line">                <span class="keyword">if</span> sorted_list[left] + sorted_list[right] &gt; target:</span><br><span class="line">                    right -= <span class="number">1</span></span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                <span class="keyword">if</span> sorted_list[left] + sorted_list[right] &lt; target:</span><br><span class="line">                    left += <span class="number">1</span></span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                <span class="keyword">if</span> sorted_list[left] + sorted_list[right] == target:</span><br><span class="line">                    triplet = <span class="built_in">tuple</span>(<span class="built_in">sorted</span>([-target, sorted_list[left], sorted_list[right]]))</span><br><span class="line">                    ans.add(triplet)</span><br><span class="line">                    right -= <span class="number">1</span></span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">return</span> [<span class="built_in">list</span>(triplet) <span class="keyword">for</span> triplet <span class="keyword">in</span> ans]</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://peterqwq.top/2024/10/19/leetcode11/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -790,93 +856,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://peterqwq.top/2023/11/13/Git%E5%91%BD%E4%BB%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Cache_4f3c05133e725b89..jpg">
-      <meta itemprop="name" content="PeterQwQ">
-      <meta itemprop="description" content="后知后觉又过了一个秋">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PeterQwQ">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/11/13/Git%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">Git命令</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-11-13 22:59:12" itemprop="dateCreated datePublished" datetime="2023-11-13T22:59:12+08:00">2023-11-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-17 02:13:32" itemprop="dateModified" datetime="2024-04-17T02:13:32+08:00">2024-04-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="提交"><a href="#提交" class="headerlink" title="提交"></a>提交</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m <span class="string">&quot;commit_info&quot;</span></span><br></pre></td></tr></table></figure>
-<h3 id="创建分支"><a href="#创建分支" class="headerlink" title="创建分支"></a>创建分支</h3><p>是指在当前节点下，创建一个完全一样的分支，和之前的分支互不干扰。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch &lt;branch_name&gt;</span><br></pre></td></tr></table></figure>
-<p>切换到相应的分支上：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;branch_name&gt;</span><br></pre></td></tr></table></figure>
-<p>可以用一个指令完成创建与移动：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b &lt;branch_name&gt;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/11/13/Git%E5%91%BD%E4%BB%A4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -948,7 +927,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

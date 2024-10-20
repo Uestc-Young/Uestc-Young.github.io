@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"peterqwq.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。 找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。 返回容器可以储存的最大水量。 一开始想到的暴力O(n^2)的方法，遍历所有的组合，找到最大的面积。不过显然会TLE。12345678910111213class Solution:">
+  <meta name="description" content="给你一个整数数组 nums ，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i !&#x3D; j、i !&#x3D; k 且 j !&#x3D; k ，同时还满足 nums[i] + nums[j] + nums[k] &#x3D;&#x3D; 0 。请你返回所有和为 0 且不重复的三元组。 注意：答案中不可以包含重复的三元组。 首先，最暴力的方法就是 O(n^3) 的时间复杂度，直接三重循环，找到所有的三元">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Leetcode 11">
-<meta property="og:url" content="http://peterqwq.top/2024/10/19/leetcode11/index.html">
+<meta property="og:title" content="Leetcode 15">
+<meta property="og:url" content="http://peterqwq.top/2024/10/20/leetcode15/index.html">
 <meta property="og:site_name" content="PeterQwQ">
-<meta property="og:description" content="给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。 找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。 返回容器可以储存的最大水量。 一开始想到的暴力O(n^2)的方法，遍历所有的组合，找到最大的面积。不过显然会TLE。12345678910111213class Solution:">
+<meta property="og:description" content="给你一个整数数组 nums ，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i !&#x3D; j、i !&#x3D; k 且 j !&#x3D; k ，同时还满足 nums[i] + nums[j] + nums[k] &#x3D;&#x3D; 0 。请你返回所有和为 0 且不重复的三元组。 注意：答案中不可以包含重复的三元组。 首先，最暴力的方法就是 O(n^3) 的时间复杂度，直接三重循环，找到所有的三元">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-10-19T03:31:50.000Z">
-<meta property="article:modified_time" content="2024-10-20T02:51:00.380Z">
+<meta property="article:published_time" content="2024-10-20T02:54:45.000Z">
+<meta property="article:modified_time" content="2024-10-20T10:55:22.208Z">
 <meta property="article:author" content="PeterQwQ">
 <meta property="article:tag" content="Algorithm">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://peterqwq.top/2024/10/19/leetcode11/">
+<link rel="canonical" href="http://peterqwq.top/2024/10/20/leetcode15/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>Leetcode 11 | PeterQwQ</title>
+  <title>Leetcode 15 | PeterQwQ</title>
   
 
 
@@ -171,7 +171,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://peterqwq.top/2024/10/19/leetcode11/">
+    <link itemprop="mainEntityOfPage" href="http://peterqwq.top/2024/10/20/leetcode15/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/Cache_4f3c05133e725b89..jpg">
@@ -184,7 +184,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Leetcode 11
+          Leetcode 15
         </h1>
 
         <div class="post-meta">
@@ -193,16 +193,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2024-10-19 11:31:50" itemprop="dateCreated datePublished" datetime="2024-10-19T11:31:50+08:00">2024-10-19</time>
+              <time title="创建时间：2024-10-20 10:54:45 / 修改时间：18:55:22" itemprop="dateCreated datePublished" datetime="2024-10-20T10:54:45+08:00">2024-10-20</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-10-20 10:51:00" itemprop="dateModified" datetime="2024-10-20T10:51:00+08:00">2024-10-20</time>
-              </span>
 
           
 
@@ -215,13 +209,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>给定一个长度为 <code>n</code> 的整数数组 <code>height</code> 。有 <code>n</code> 条垂线，第 <code>i</code> 条线的两个端点是 <code>(i, 0)</code> 和 <code>(i, height[i])</code> 。</p>
-<p>找出其中的两条线，使得它们与 <code>x</code> 轴共同构成的容器可以容纳最多的水。</p>
-<p>返回容器可以储存的最大水量。</p>
-<p>一开始想到的暴力<code>O(n^2)</code>的方法，遍历所有的组合，找到最大的面积。不过显然会TLE。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maxArea</span>(<span class="params">self, height: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(height)-<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i+<span class="number">1</span>, <span class="built_in">len</span>(height)):</span><br><span class="line">                bigger_height = <span class="built_in">min</span>(height[i], height[j])</span><br><span class="line">                area = bigger_height * (j - i)</span><br><span class="line">                <span class="comment"># print(area)</span></span><br><span class="line">                <span class="keyword">if</span> area &lt;= ans:</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    ans = area</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure></p>
-<p>假设我们有两个指针，指向数组的两个位置，分别对应着高度 <code>x, y (x &lt;= y)</code>，不妨假设他们之间的距离是 <code>t</code> 。那么这两个指针之间的面积就是 <code>min(x, y) * t = x * t</code> 。此时我们如果移动高的指针，得到新的 <code>y_1</code>。分两种情况讨论，如果 <code>y_1 &lt; y</code>，那么新的面积就是 <code>min(x, y_1) * (t-1) &lt;= min(x, y) * t</code>。如果 <code>y_1 &gt;= y</code>，那么新的面积就是 <code>min(x, y_1) * (t-1) = x * (t-1)</code>。这样可以看出，如果我们移动高的指针，面积只会变小，所以我们应该移动矮的指针。</p>
-<p>换句话说，其实可以类比木桶的“短板效应”，我们应该移动短的那一边，因为移动长的那一边，不管怎么移动，都不会使得面积变大。最终的时间复杂度是 <code>O(n)</code>。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maxArea</span>(<span class="params">self, height: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        i, j = <span class="number">0</span>, <span class="built_in">len</span>(height)-<span class="number">1</span></span><br><span class="line">        ans = (<span class="built_in">len</span>(height)-<span class="number">1</span>) * <span class="built_in">min</span>(height[i], height[j])</span><br><span class="line">        <span class="keyword">while</span> i != j:</span><br><span class="line">            <span class="keyword">if</span> height[i] &lt;= height[j]:</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                j -= <span class="number">1</span></span><br><span class="line">            now_area = (j - i) * <span class="built_in">min</span>(height[i], height[j])</span><br><span class="line">            <span class="keyword">if</span> now_area &gt; ans:</span><br><span class="line">                ans = now_area</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure></p>
-
+        <p>给你一个整数数组 <code>nums</code> ，判断是否存在三元组 <code>[nums[i], nums[j], nums[k]]</code> 满足 <code>i != j、i != k 且 j != k</code> ，同时还满足 <code>nums[i] + nums[j] + nums[k] == 0</code> 。请你返回所有和为 <code>0</code> 且不重复的三元组。</p>
+<p>注意：答案中不可以包含重复的三元组。</p>
+<p>首先，最暴力的方法就是 <code>O(n^3)</code> 的时间复杂度，直接三重循环，找到所有的三元组，然后再去重。</p>
+<p>但是在固定一个数之后，本质上又转化成了两数之和的问题，所以可以用双指针来优化一下。</p>
+<p>这是一个复杂度为 <code>O(n^2)</code> 的算法，通过了 <code>308/313</code> 的测试用例。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">threeSum</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]:</span><br><span class="line">        ans = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(nums)):</span><br><span class="line">            target = -nums[i]</span><br><span class="line">            seen = &#123;&#125;</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i+<span class="number">1</span>, <span class="built_in">len</span>(nums)):</span><br><span class="line">                target_list = <span class="built_in">sorted</span>([-target, nums[j], target-nums[j]])</span><br><span class="line">                <span class="keyword">if</span> target - nums[j] <span class="keyword">in</span> seen <span class="keyword">and</span> target_list <span class="keyword">not</span> <span class="keyword">in</span> ans:</span><br><span class="line">                    ans.append(target_list)</span><br><span class="line">                seen[nums[j]] = j        </span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure></p>
+<p>上面的算法在中间的去重操作上还需要遍历一次 <code>ans</code> 数组，所以可以用一个 <code>set</code> 来代替 <code>ans</code> 数组，这样就不需要再去重了。而且在python中，<code>set</code> 的查找操作 <code>in</code> 是 <code>O(1)</code> 的时间复杂度，所以这样的优化是可行的。</p>
+<p>这种算法时间复杂度是 <code>O(n^2)</code>，通过了 <code>312/313</code> 的测试用例。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">threeSum</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]:</span><br><span class="line">        ans = <span class="built_in">set</span>()  <span class="comment"># 用集合去重</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(nums)):</span><br><span class="line">            target = -nums[i]</span><br><span class="line">            seen = &#123;&#125;</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i + <span class="number">1</span>, <span class="built_in">len</span>(nums)):</span><br><span class="line">                <span class="keyword">if</span> target - nums[j] <span class="keyword">in</span> seen:</span><br><span class="line">                    triplet = <span class="built_in">tuple</span>(<span class="built_in">sorted</span>([-target, nums[j], target - nums[j]]))</span><br><span class="line">                    ans.add(triplet)  <span class="comment"># 直接将结果加入集合</span></span><br><span class="line">                seen[nums[j]] = j</span><br><span class="line">        <span class="keyword">return</span> [<span class="built_in">list</span>(triplet) <span class="keyword">for</span> triplet <span class="keyword">in</span> ans]  <span class="comment"># 将最终结果转为列表返回</span></span><br></pre></td></tr></table></figure></p>
+<p>看起来暴力是不行的，那么就换一种思路。对于原数组我们在一开始就进行排序，然后固定一个数，再用双指针来找另外两个数。在寻找另外两个数的时候，如果两个数的和大于目标值，那么右指针左移；如果两个数的和小于目标值，那么左指针右移；如果两个数的和等于目标值，那么就找到了一个三元组。这种算法的时间复杂度是 <code>O(n^2)</code>。同时在这里，固定第一个元素的时候，如果和上一个元素相同，那么就跳过这个元素，因为这个元素已经找过了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">threeSum</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]:</span><br><span class="line">        sorted_list = <span class="built_in">sorted</span>(nums)</span><br><span class="line">        ans = <span class="built_in">set</span>()</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(sorted_list)):</span><br><span class="line">            <span class="keyword">if</span> i &gt; <span class="number">0</span> <span class="keyword">and</span> sorted_list[i] == sorted_list[i-<span class="number">1</span>]:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            target = -sorted_list[i]</span><br><span class="line">            left = i+<span class="number">1</span></span><br><span class="line">            right = <span class="built_in">len</span>(sorted_list)-<span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> left &lt; right:</span><br><span class="line">                <span class="keyword">if</span> sorted_list[left] + sorted_list[right] &gt; target:</span><br><span class="line">                    right -= <span class="number">1</span></span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                <span class="keyword">if</span> sorted_list[left] + sorted_list[right] &lt; target:</span><br><span class="line">                    left += <span class="number">1</span></span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                <span class="keyword">if</span> sorted_list[left] + sorted_list[right] == target:</span><br><span class="line">                    triplet = <span class="built_in">tuple</span>(<span class="built_in">sorted</span>([-target, sorted_list[left], sorted_list[right]]))</span><br><span class="line">                    ans.add(triplet)</span><br><span class="line">                    right -= <span class="number">1</span></span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">return</span> [<span class="built_in">list</span>(triplet) <span class="keyword">for</span> triplet <span class="keyword">in</span> ans]</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -239,13 +235,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2024/10/19/leetcode283/" rel="prev" title="Leetcode 283">
-      <i class="fa fa-chevron-left"></i> Leetcode 283
+    <a href="/2024/10/19/leetcode11/" rel="prev" title="Leetcode 11">
+      <i class="fa fa-chevron-left"></i> Leetcode 11
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2024/10/20/leetcode15/" rel="next" title="Leetcode 15">
-      Leetcode 15 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
